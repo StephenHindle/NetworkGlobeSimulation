@@ -18,10 +18,14 @@
   #ov{pointer-events:none}
   .panel{position:absolute;background:var(--panel);border:1px solid var(--line);border-radius:10px;
     backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-  #hud{top:12px;left:12px;padding:10px 12px 11px;max-width:min(430px,calc(100% - 96px))}
-  #hud h1{margin:0 0 2px;font-size:14px;font-weight:650;letter-spacing:.02em}
-  #hud .sub{font-size:11.5px;color:var(--mute);margin-bottom:8px}
-  #phases{display:flex;flex-wrap:wrap;gap:5px}
+  #hud{top:12px;left:12px;right:62px;height:38px;padding:0 5px 0 14px;display:flex;align-items:center;gap:14px;white-space:nowrap;overflow:hidden}
+  #hud h1{margin:0;font-size:14px;font-weight:650;letter-spacing:.02em;flex:0 0 auto}
+  #hud .sub{font-size:11.5px;color:var(--mute);flex:0 100 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  #phases{display:flex;flex-wrap:nowrap;gap:5px;flex:0 1 auto;min-width:0;overflow:hidden}
+  #begin{margin-left:auto;flex:0 0 auto;border:1px solid var(--accent);background:var(--accent);color:#04121f;border-radius:7px;
+    font:700 12.5px "Segoe UI",system-ui,sans-serif;padding:6px 14px;cursor:pointer;box-shadow:0 0 14px -3px var(--accent)}
+  #begin:hover{filter:brightness(1.12)}
+  #begin:disabled{opacity:.4;cursor:default;box-shadow:none}
   .ph{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.12);
     color:var(--mute);transition:all .35s;white-space:nowrap}
   .ph i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;background:var(--c);opacity:.5;vertical-align:0}
@@ -45,14 +49,39 @@
   #thumb{position:absolute;left:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;
     background:#06121f;border:2px solid var(--accent);box-shadow:0 0 14px var(--accent)}
   #zlab{font-size:10px;color:var(--mute);text-align:center;line-height:1.2}
-  #stage{left:50%;top:14px;transform:translateX(-50%);padding:6px 14px;font-size:12.5px;letter-spacing:.04em;
+  #stage{left:50%;bottom:14px;transform:translateX(-50%);padding:6px 14px;font-size:12.5px;letter-spacing:.04em;
     white-space:nowrap;pointer-events:none;transition:opacity .3s}
   #stage b{color:var(--accent);font-weight:600}
-  #hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font-size:13px;color:var(--ink);
+  #hint{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);font-size:13px;color:var(--ink);
     padding:8px 14px;border-radius:999px;background:rgba(57,208,255,.12);border:1px solid rgba(57,208,255,.35);
     transition:opacity .6s;pointer-events:none;white-space:nowrap}
   .off{display:none!important}
   #err[hidden]{display:none}
+  #legend{left:12px;top:62px;padding:7px 10px;display:flex;align-items:center;gap:10px;font-size:11px;color:var(--mute);transition:opacity .4s;pointer-events:none}
+  #legend b{color:var(--ink);font-weight:600;letter-spacing:.04em}
+  #legend span{display:flex;align-items:center;gap:5px;white-space:nowrap}
+  #legend i{width:16px;height:3px;border-radius:2px;background:var(--c);box-shadow:0 0 6px var(--c)}
+  #pkt{position:absolute;z-index:8;pointer-events:none;min-width:250px;max-width:340px;border-radius:12px;overflow:hidden;
+    background:rgba(5,14,26,.94);border:1.5px solid var(--c);box-shadow:0 0 22px -4px var(--c),0 8px 24px rgba(0,0,0,.5);
+    font:12px "Segoe UI",system-ui,sans-serif;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}
+  #pkt.show{opacity:1;transform:none}
+  #pkt .hd{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--c);color:#071019;font-weight:700;font-size:13px}
+  #pkt .hd .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #pkt .lt{font:700 10px "Segoe UI",system-ui,sans-serif;padding:2px 6px;border-radius:999px;white-space:nowrap}
+  #pkt .hd .lt{background:rgba(7,16,25,.85);color:var(--c)}
+  #pkt .rows{padding:6px 8px 8px;display:flex;flex-direction:column;gap:5px}
+  #pkt .row{display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:start;padding:5px 8px;border-radius:8px;
+    background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+  #pkt .row .lt{background:rgba(57,208,255,.14);color:#9fe6ff;text-align:center;margin-top:1px}
+  #pkt .row b{display:block;color:#e6f4ff;font-weight:600;font-size:11.5px}
+  #pkt .row span{color:#9fbad3;font-family:ui-monospace,Consolas,Menlo,monospace;font-size:11.5px;word-break:break-all}
+  #pkt .row em{display:block;margin-top:2px;font-style:normal;color:#ffc45a;font-family:"Segoe UI",system-ui,sans-serif;font-size:10.5px}
+  #pkt .hop{padding:0 10px 8px;color:var(--mute);font-size:10.5px}
+  #fs{position:absolute;top:12px;right:12px;z-index:6;width:38px;height:38px;border-radius:9px;border:1px solid var(--line);
+    background:var(--panel);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  #fs:hover{background:rgba(57,208,255,.22);border-color:var(--accent)}
+  #fs svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   #urlbar{z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:7px;width:min(390px,calc(100% - 110px));
     opacity:0;pointer-events:none;transition:opacity .3s}
   #urlbar.show{opacity:1;pointer-events:auto}
@@ -65,7 +94,7 @@
     font:600 12px "Segoe UI",system-ui,sans-serif;padding:7px 11px;cursor:pointer;white-space:nowrap}
   .btn:hover{background:rgba(57,208,255,.25)}
   .btn.go{background:var(--accent);color:#04121f;border-color:var(--accent)}
-  #runbar{left:50%;top:12px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:6px 7px 6px 12px;max-width:calc(100% - 24px)}
+  #runbar{left:50%;bottom:12px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:6px 7px 6px 12px;max-width:calc(100% - 24px)}
   #rb-text{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
   #rb-text b{color:var(--accent);font-weight:600}
   .rb-btns{display:flex;gap:5px;flex-shrink:0}
@@ -73,9 +102,7 @@
   #zoom.locked{opacity:.55;pointer-events:none}
   #err{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:30px;text-align:center;color:var(--mute)}
   @media (max-width:1000px){
-    #stage{top:auto;bottom:14px}
-    #runbar{top:auto;bottom:12px;left:274px;right:84px;transform:none}
-    #hint{bottom:58px}
+    #runbar{left:274px;right:84px;transform:none}
     #hud .sub{display:none}
   }
   @media (max-width:720px){
@@ -83,7 +110,7 @@
     #log{width:200px}
     #hint{bottom:auto;top:46%}
   }
-  @media (max-width:520px){ #log{display:none} #hud .sub{display:none} #runbar{left:12px;flex-wrap:wrap} }
+  @media (max-width:520px){ #log{display:none} #phases{display:none} #runbar{left:12px;flex-wrap:wrap} }
 </style>
 </head>
 <body>
@@ -91,11 +118,13 @@
   <canvas id="gl"></canvas>
   <canvas id="ov"></canvas>
   <div id="hud" class="panel">
-    <h1>Packet journey: Adelaide ⇄ Sydney</h1>
-    <div class="sub">One HTTPS session from a home in Norwood SA to a web server in Ultimo NSW</div>
+    <h1>Packet Journey: from power on to page load</h1>
+    <div class="sub">Norwood SA home network → the internet</div>
     <div id="phases"></div>
+    <button id="begin" type="button">Begin Journey</button>
   </div>
   <div id="stage" class="panel">Global view</div>
+  <div id="legend" class="panel"><b>Global traffic</b><span style="--c:#4fd8ff"><i></i>Web</span><span style="--c:#ff5fd2"><i></i>Video</span><span style="--c:#ffc45a"><i></i>Email</span><span style="--c:#a98bff"><i></i>DNS</span></div>
   <div id="log" class="panel"><div class="t">Packet log</div><div id="evs"></div></div>
   <div id="zoom" class="panel">
     <button id="zin" title="Zoom in" aria-label="Zoom in">+</button>
@@ -118,6 +147,11 @@
       <button class="btn" id="rb-pause">Pause</button><button class="btn" id="rb-step">Step</button><button class="btn" id="rb-speed">1×</button><button class="btn" id="rb-stop">Stop</button>
     </div>
   </div>
+  <button id="fs" type="button" title="Full screen" aria-label="Full screen">
+    <svg id="fs-in" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+    <svg id="fs-out" viewBox="0 0 24 24" style="display:none"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
+  </button>
+  <div id="pkt"></div>
   <div id="err" hidden></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -288,10 +322,10 @@ const satRings=[];
 
 /* ---------- network graph ---------- */
 const NODES=[
-  {lat:-34.9228,lon:138.6352,type:'client',name:'Your computer',sub:'Norwood SA',grp:'Adelaide',short:'Laptop'},
-  {lat:-34.9203,lon:138.6318,type:'router',name:'Home router (NBN gateway)',ms:1,hop:1,grp:'Adelaide',origin:true,short:'Home router'},
-  {lat:-34.9213,lon:138.6188,type:'router',name:'NBN POI / ISP edge, Kent Town',ms:5,hop:2,grp:'Adelaide',short:'ISP edge'},
-  {lat:-34.9262,lon:138.5992,type:'router',name:'ISP core + IX, Adelaide CBD',ms:6,hop:3,grp:'Adelaide',short:'ISP core'},
+  {lat:-34.9222,lon:138.6450,type:'client',name:'Your computer',sub:'Norwood SA',grp:'Adelaide',short:'Laptop'},
+  {lat:-34.9180,lon:138.6335,type:'router',name:'Home router (NBN gateway)',ms:1,hop:1,grp:'Adelaide',origin:true,short:'Home router'},
+  {lat:-34.9238,lon:138.6205,type:'router',name:'NBN POI / ISP edge, Kent Town',ms:5,hop:2,grp:'Adelaide',short:'ISP edge'},
+  {lat:-34.9228,lon:138.6045,type:'router',name:'ISP core + IX, Adelaide CBD',ms:6,hop:3,grp:'Adelaide',short:'ISP core'},
   {lat:-36.716,lon:142.199,type:'router',name:'Backbone router, Horsham VIC',ms:9,hop:4,grp:'Horsham'},
   {lat:-37.829,lon:144.925,type:'router',name:'Core router, Port Melbourne VIC',ms:12,hop:5,grp:'Melbourne'},
   {lat:-35.117,lon:147.369,type:'router',name:'Backbone router, Wagga Wagga NSW',ms:16,hop:6,grp:'Wagga Wagga'},
@@ -299,13 +333,29 @@ const NODES=[
   {lat:-33.910,lon:151.194,type:'router',name:'Sydney IX, Alexandria NSW',ms:22,hop:8,grp:'Sydney'},
   {lat:-33.8815,lon:151.1985,type:'router',name:'Data centre edge router, Ultimo',ms:23,hop:9,grp:'Sydney'},
   {lat:-33.8798,lon:151.2012,type:'server',name:'Web server',sub:'example.com.au · Ultimo NSW',grp:'Sydney',short:'Sydney server'},
-  {lat:-34.9293,lon:138.6048,type:'dns',name:'ISP DNS resolver',sub:'Caching resolver · Adelaide CBD',grp:'Adelaide',short:'DNS resolver'},
-  {lat:-37.8345,lon:144.9340,type:'router',name:'Hosting edge router, Port Melbourne',ms:13,hop:6,grp:'Melbourne',short:'Hosting edge'},
-  {lat:-37.8362,lon:144.9372,type:'server',name:'Web server',sub:'Hosting data centre · Port Melbourne VIC',grp:'Melbourne',short:'Web server'}
+  {lat:-34.9325,lon:138.5960,type:'dns',name:'ISP DNS resolver',sub:'Caching resolver · Adelaide CBD',grp:'Adelaide',short:'DNS resolver'},
+  {lat:-37.8360,lon:144.9420,type:'router',name:'Hosting edge router, Port Melbourne',ms:13,hop:6,grp:'Melbourne',short:'Hosting edge'},
+  {lat:-37.8395,lon:144.9560,type:'server',name:'Web server',sub:'Hosting data centre · Port Melbourne VIC',grp:'Melbourne',short:'Web server'}
 ];
 const RES=11,HE=12,WS=13;
+// national backbone to the other capitals (background traffic only)
+const CAP0=NODES.length;
+NODES.push(
+  {lat:-32.49,lon:137.77,type:'router',name:'Backbone router, Port Augusta SA',ms:9,hop:4,grp:'Port Augusta'},
+  {lat:-30.75,lon:121.47,type:'router',name:'Backbone router, Kalgoorlie WA',ms:22,hop:5,grp:'Kalgoorlie'},
+  {lat:-31.95,lon:115.86,type:'router',name:'Core router, Perth WA',ms:28,hop:6,grp:'Perth'},
+  {lat:-23.70,lon:133.88,type:'router',name:'Backbone router, Alice Springs NT',ms:20,hop:5,grp:'Alice Springs'},
+  {lat:-12.46,lon:130.84,type:'router',name:'Core router, Darwin NT',ms:32,hop:6,grp:'Darwin'},
+  {lat:-30.30,lon:153.11,type:'router',name:'Backbone router, Coffs Harbour NSW',ms:27,hop:9,grp:'Coffs Harbour'},
+  {lat:-27.47,lon:153.03,type:'router',name:'Core router, Brisbane QLD',ms:30,hop:10,grp:'Brisbane'},
+  {lat:-41.44,lon:147.14,type:'router',name:'Backbone router, Launceston TAS',ms:17,hop:6,grp:'Launceston'},
+  {lat:-42.88,lon:147.33,type:'router',name:'Core router, Hobart TAS',ms:19,hop:7,grp:'Hobart'}
+);
+const [PAU,KAL,PER,ALI,DAR,COF,BNE,LAU,HOB]=[0,1,2,3,4,5,6,7,8].map(k=>CAP0+k);
 const URL_NODES=new Set([0,1,2,3,4,5,RES,HE,WS]);
-const isActive=i=>mode==='loop'?i!==RES&&i!==HE&&i!==WS:URL_NODES.has(i);
+const idle=()=>mode==='loop'||mode==='held';
+const isActive=i=>idle()?(i!==RES&&i!==HE&&i!==WS&&(i<CAP0||capA>0.02)):URL_NODES.has(i);
+let capA=0, meshA=0;   // fade for the extra capital-city routes
 NODES.forEach((n,i)=>{ n.i=i; n.local=ll(n.lat,n.lon,1.000025); n.world=new THREE.Vector3(); n.flash=0; n.fc='#39d0ff'; if(!n.short) n.short=n.name.split(',')[0]; });
 const LOOP=[0,1,2,3,4,5,6,7,8,9,10];
 const EDGES={}, EDGE_LIST=[];
@@ -326,6 +376,15 @@ function addRoute(r){
   }
 }
 [LOOP,[3,RES],[5,HE],[HE,WS]].forEach(addRoute);
+const CAP_ROUTES=[[3,PAU,KAL,PER],[3,PAU,ALI,DAR],[8,COF,BNE],[5,LAU,HOB]];
+CAP_ROUTES.forEach(addRoute);
+// full mesh: a direct link between every pair of capital-city core routers
+const CAPITALS=[3,5,7,8,PER,DAR,BNE,HOB];   // Adelaide, Melbourne, Canberra, Sydney, Perth, Darwin, Brisbane, Hobart
+const MESH=[];
+for(let i=0;i<CAPITALS.length;i++) for(let j=i+1;j<CAPITALS.length;j++){
+  const a=CAPITALS[i], b=CAPITALS[j]; if(EDGES[ek(a,b)]) continue;
+  addRoute([a,b]); EDGES[ek(a,b)].mesh=true; MESH.push([a,b]);
+}
 const edgeOf=(a,b)=>EDGES[ek(a,b)];
 
 /* ---------- camera keyframes ---------- */
@@ -391,7 +450,8 @@ addEventListener('resize',resize); resize();
 let zT=0, z=0;
 const track=$('track'), thumb=$('thumb'), fill=$('fill');
 [0.42,0.64,0.82].forEach(v=>{const t=document.createElement('div');t.className='tick';t.style.bottom=(v*100)+'%';track.appendChild(t);});
-function setZ(v){ if(mode!=='loop') return; zT=clamp(v,0,1); }
+function setZ(v){ if(mode==='held') leaveHeld(); if(mode!=='loop') return; beginTw=null; zT=clamp(v,0,1); }
+let beginTw=null, loopOn=false;
 function fromPointer(e){ const r=track.getBoundingClientRect(); setZ(1-(e.clientY-r.top)/r.height); }
 let dragging=false;
 track.addEventListener('pointerdown',e=>{dragging=true;track.setPointerCapture(e.pointerId);fromPointer(e);});
@@ -399,7 +459,7 @@ track.addEventListener('pointermove',e=>{if(dragging)fromPointer(e);});
 track.addEventListener('pointerup',()=>dragging=false);
 track.addEventListener('pointercancel',()=>dragging=false);
 $('zin').onclick=()=>setZ(zT+0.08); $('zout').onclick=()=>setZ(zT-0.08);
-addEventListener('wheel',e=>{e.preventDefault(); if(mode!=='loop') return; setZ(zT-e.deltaY*(e.deltaMode===1?0.02:0.0007));},{passive:false});
+addEventListener('wheel',e=>{e.preventDefault(); if(!idle()) return; setZ(zT-e.deltaY*(e.deltaMode===1?0.02:0.0007));},{passive:false});
 addEventListener('keydown',e=>{ if(e.target&&e.target.tagName==='INPUT') return; if(e.key==='+'||e.key==='='||e.key==='ArrowUp'){setZ(zT+0.04);e.preventDefault();} if(e.key==='-'||e.key==='_'||e.key==='ArrowDown'){setZ(zT-0.04);e.preventDefault();} });
 // pinch
 const pts=new Map(); let pinch0=0, pz0=0;
@@ -408,10 +468,10 @@ glc.addEventListener('pointermove',e=>{ if(!pts.has(e.pointerId))return; pts.set
 const endP=e=>{pts.delete(e.pointerId); if(pts.size<2)pinch0=0;};
 glc.addEventListener('pointerup',endP); glc.addEventListener('pointercancel',endP);
 
-const STAGES=[[0,'Global view'],[0.14,'Turning to Australia'],[0.42,'Australia'],[0.56,'Adelaide ⇄ Sydney path'],[0.76,'Adelaide metro'],[0.93,'Originating router']];
+const STAGES=[[0,'Global view'],[0.14,'Turning to Australia'],[0.42,'Australia'],[0.56,'Adelaide to the internet'],[0.76,'Adelaide metro'],[0.93,'Originating router']];
 
 /* ---------- phases, log ---------- */
-const TYPE={tcp:'#ffb347',tls:'#c792ff',req:'#4fd8ff',res:'#5cff9d',fin:'#ff6b8b',dns:'#8aa8ff'};
+const TYPE={tcp:'#ffb347',tls:'#c792ff',req:'#4fd8ff',res:'#5cff9d',fin:'#ff6b8b',dns:'#8aa8ff',dhcp:'#f4e04d',arp:'#ff8fd6',bg:'#7fb6d8'};
 let phEls=[], curSeq=null;
 function setPhases(list){ const box=$('phases'); box.innerHTML='';
   phEls=list.map(([n,c])=>{const d=document.createElement('div');d.className='ph';d.style.setProperty('--c',c);d.innerHTML='<i></i>'+n;box.appendChild(d);return d;}); }
@@ -429,8 +489,9 @@ function clearLog(){ evs.innerHTML=''; }
 /* ---------- sequence engine ---------- */
 // step entry: [label, route (node list), type, delay (s), phase index, encrypted]
 const rev=r=>[...r].reverse();
-const C2S=LOOP, S2C=rev(LOOP);
-const LOOP_PHASES=[['TCP 3-way handshake',TYPE.tcp],['TLS 1.3 negotiation',TYPE.tls],['HTTPS web traffic',TYPE.req],['Connection close',TYPE.fin]];
+const BGR=LOOP.slice(3);               // other customers' traffic: Adelaide ISP core to Sydney
+const C2S=BGR, S2C=rev(BGR);
+const LOOP_PHASES=[['DHCP',TYPE.dhcp],['ARP',TYPE.arp],['DNS',TYPE.dns],['TCP',TYPE.tcp],['TLS',TYPE.tls],['HTTPS',TYPE.req]];
 const LOOP_STEPS=[
   [['SYN',C2S,'tcp',0,0]],
   [['SYN-ACK',S2C,'tcp',0]],
@@ -446,9 +507,10 @@ const LOOP_STEPS=[
   [['ACK',S2C,'tcp',0],['FIN',S2C,'fin',0.45]],
   [['ACK',C2S,'fin',0]]
 ];
-function makeSeq(steps,phases,loop,wait){ return {steps,phases,loop,packets:[],stepIdx:-1,queue:[],left:0,waitT:wait,time:0,done:false,phase:-1,onSpawn:null,onStep:null}; }
+function makeSeq(steps,phases,loop,wait,quiet){ return {steps,phases,loop,quiet:!!quiet,packets:[],stepIdx:-1,queue:[],left:0,waitT:wait,time:0,done:false,phase:-1,onSpawn:null,onStep:null}; }
 function seqSpawn(S,p){
   const [label,route,type,,phase,enc]=p;
+  if(S.quiet){ S.packets.push({label,route,type,enc:!!enc,col:TYPE.bg,s:0,last:0,bg:true}); return; }
   if(phase!=null) setPhase(phase);
   S.packets.push({label,route,type,enc:!!enc,col:TYPE[type],s:0,last:0});
   logEv(label,type,enc,route[0],route[route.length-1]);
@@ -457,7 +519,8 @@ function seqSpawn(S,p){
 }
 function seqUpdate(S,dt){
   S.time+=dt;
-  if(!S.queue.length&&S.left<=0&&!S.done){
+  if(S.quiet&&!S.queue.length&&!S.done){ S.waitT-=dt; if(S.waitT<=0){ const n=(S.stepIdx+1)%S.steps.length; S.stepIdx=n; S.queue=S.steps[n].map(p=>({p,at:S.time+p[3]})); S.left=S.queue.length; S.waitT=0.7; } }
+  else if(!S.queue.length&&S.left<=0&&!S.done){
     S.waitT-=dt;
     if(S.waitT<=0){
       let next=S.stepIdx+1;
@@ -474,17 +537,26 @@ function seqMove(S,dt,timed){
     const pk=S.packets[i], last=pk.route.length-1;
     const k=Math.min(Math.floor(pk.s),last-1), e=edgeOf(pk.route[k],pk.route[k+1]);
     let rate;
-    if(timed) rate=(pk.type==='dns'?1.4:1)/e.dur;
+    if(pk.bg) rate=0.55/e.dur;
+    else if(timed) rate=(pk.type==='dns'?1.4:(pk.type==='dhcp'||pk.type==='arp')?0.85:1)/e.dur;
     else { const q=scrAt(pk), vis=q&&onScreen(q,30)&&e.px>1; rate=vis?clamp(210/e.px,0.2,3.2):3.2; }
     pk.s+=rate*dt;
     const fl=Math.floor(pk.s);
-    if(fl!==pk.last&&fl>0&&fl<last){ const n=NODES[pk.route[fl]]; n.flash=1; n.fc=pk.col; }
+    if(!pk.bg&&fl!==pk.last&&fl>0&&fl<last){ const n=NODES[pk.route[fl]]; n.flash=1; n.fc=pk.col; }
     pk.last=fl;
     if(pk.s>=last){
-      const n=NODES[pk.route[last]]; n.flash=1; n.fc=pk.col; S.packets.splice(i,1); S.left--;
-      if(S.left<=0&&!S.queue.length) S.waitT=(S.stepIdx===S.steps.length-1)?(S.loop?3.2:0.9):0.35;
+      if(!pk.bg){ const n=NODES[pk.route[last]]; n.flash=1; n.fc=pk.col; } S.packets.splice(i,1); S.left--;
+      if(S.left<=0&&!S.queue.length&&!S.quiet) S.waitT=(S.stepIdx===S.steps.length-1)?(S.loop?3.2:0.9):0.35;
     }
   }
+}
+
+/* ---------- background traffic on the backbone ---------- */
+const BG_FLOWS=[{r:LOOP.slice(3),gap:0.55},...CAP_ROUTES.map(r=>({r,gap:0.9})),...MESH.map(r=>({r,gap:2.2,mesh:true}))].map(f=>({...f,t:Math.random()*f.gap}));
+function bgSpawn(dt){
+  for(const f of BG_FLOWS){ f.t-=dt; if(f.t>0) continue; f.t=f.gap*(0.6+Math.random()*0.8);
+    const route=Math.random()<0.5?f.r:[...f.r].reverse();
+    loopSeq.packets.push({label:'',route,type:'bg',enc:false,col:f.mesh?'#5cf0b0':TYPE.bg,s:0,last:0,bg:true,mesh:!!f.mesh}); loopSeq.left++; }
 }
 
 /* ---------- projection helpers ---------- */
@@ -507,7 +579,8 @@ function posOn(route,s,world){
 function scrAt(pk,s){ return proj(posOn(pk.route,s==null?pk.s:s,true),{}); }
 
 /* ---------- URL journey ---------- */
-const loopSeq=makeSeq(LOOP_STEPS,LOOP_PHASES,true,1.2);
+const loopSeq=makeSeq(LOOP_STEPS,LOOP_PHASES,true,1.2,true);
+let urlInfo=null;
 let mode='loop', urlSeq=null, insetA=0, paused=false, stepping=false, speed=1, urlHost='';
 curSeq=loopSeq; setPhases(LOOP_PHASES);
 const trunc=(t,n)=>t.length>n?t.slice(0,n-1)+'…':t;
@@ -547,80 +620,86 @@ function buildUrlSteps(u){
   else st.push([['ACK',C2W,'tcp',0],['FIN',C2W,'fin',0.55,P('Close')]]);
   st.push([['ACK',W2C,'tcp',0],['FIN',W2C,'fin',0.45]]);
   st.push([['ACK',C2W,'fin',0]]);
-  return {steps:st,phases,host,tls,ip};
+  return {steps:st,phases,host,tls,ip,path,port:tls?443:80,isIP};
 }
 
 // camera: one held shot per step
-const fc={T:new THREE.Vector3(),L:0.001,dT:new THREE.Vector3(),dL:0.001};
-let shotWide=false, camTw=null;
+// camera state: target point, offset from target, up vector
+const fc={T:new THREE.Vector3(),O:new THREE.Vector3(0,0,1),U:new THREE.Vector3(0,1,0),dT:new THREE.Vector3(),dO:new THREE.Vector3(0,0,1)};
+let shotWide=false, camTw=null, insetCap=1e9;
+const WIDE_Z=0.70;
 const tmpCam=new THREE.PerspectiveCamera(40,1,1e-6,10);
-function poseCam(cam,T,L){
-  const f=frame(T), dir=f.R.clone().multiplyScalar(0.8).add(f.S.clone().multiplyScalar(0.62)).normalize();
-  cam.position.copy(T).addScaledVector(dir,L);
-  cam.up.copy(f.N.clone().add(f.R.clone().multiplyScalar(0.55)).normalize()); cam.lookAt(T);
+function poseCam(cam,T,O,U){ cam.position.copy(T).add(O); cam.up.copy(U); cam.lookAt(T); }
+function closePose(c,L){
+  const f=frame(c), dir=f.R.clone().multiplyScalar(0.8).add(f.S.clone().multiplyScalar(0.62)).normalize();
+  return {T:c.clone(),O:dir.multiplyScalar(L),U:f.N.clone().add(f.R.clone().multiplyScalar(0.55)).normalize()};
 }
-// where the two magnifier boxes go, and how big they are
-function insetGeom(){
-  const g=14, hr=$('hud').getBoundingClientRect(), lr=$('log').getBoundingClientRect();
-  const topA=hr.bottom+g, topM=VW<=1000?g:64, logTop=VW>520?lr.top-g:VH-g;
-  const old=clamp(Math.min(VW*0.25,VH*0.34),110,230);
-  const S=Math.round(Math.max(100,Math.min(old*2, logTop-topA, (VW-3*g)/2.3, VH-topM-110)));
-  return {g,S,topA,topM,logTop};
+// magnifier slots: a row of equal boxes, evenly spread across the page, above Adelaide
+function insetSlots(){
+  const g=14, hr=$('hud').getBoundingClientRect();
+  const rb=runbar.classList.contains('off')?null:runbar.getBoundingClientRect();
+  let top=hr.bottom+g; if(rb&&rb.top<VH/2) top=Math.max(top,rb.bottom+g);
+  const n=INSETS.length, usable=VW-84;           // keep clear of the zoom column on the right
+  const S=Math.round(clamp(Math.min(VH*0.36,(usable-g*(n+1))/(2*n),insetCap),90,300)), Wd=2*S;   // boxes are twice as wide as tall
+  const gap=Math.max(g*0.5,(usable-n*Wd)/(n+1));
+  return {S,Wd,top,g,xs:INSETS.map((_,k)=>Math.round(gap+k*(Wd+gap)))};
 }
-// wide shot solved so Adelaide sits right of its box and Melbourne sits below its box
-function solveWide(nodes){
-  const mw=globe.matrixWorld, A=NODES[1].local.clone().applyMatrix4(mw), M=NODES[5].local.clone().applyMatrix4(mw);
-  const pts=nodes.map(i=>NODES[i].local.clone().applyMatrix4(mw));
-  const G=insetGeom(), pad=34, gapM=48;
-  const wantA={x:G.g+G.S+G.g+pad, y:G.topA+G.S/2};
-  const wantMy=G.topM+G.S+gapM, maxMx=VW-G.g-G.S/2, dyStar=Math.max(60,wantMy-wantA.y), dxMax=Math.max(120,maxMx-wantA.x);
-  const T=new THREE.Vector3(); pts.forEach(p=>T.add(p)); T.normalize();
-  let L=A.distanceTo(M)*2.2;
+// wide shot: the loop camera at 70% zoom, panned so Adelaide sits just below the boxes
+function wideShot(){
+  insetCap=1e9;
+  for(let pass=0;pass<2;pass++){
+  poseAt(WIDE_Z); const T=_T.clone(), O=_O.clone(), U=_U.clone();
+  const mw=globe.matrixWorld, A=NODES[1].local.clone().applyMatrix4(mw), M=NODES[WS].local.clone().applyMatrix4(mw);
   tmpCam.aspect=VW/VH; tmpCam.updateProjectionMatrix();
   const P=v=>{ const q=v.clone().project(tmpCam); return {x:(q.x*0.5+0.5)*VW,y:(-q.y*0.5+0.5)*VH}; };
-  for(let it=0;it<40;it++){
-    poseCam(tmpCam,T,L); tmpCam.updateMatrixWorld(true);
-    const pa=P(A), pm=P(M);
-    const k=Math.max((pm.y-pa.y)/dyStar,(pm.x-pa.x)/dxMax);
-    if(isFinite(k)&&k>0) L*=Math.pow(k,0.7);
-    poseCam(tmpCam,T,L); tmpCam.updateMatrixWorld(true);
-    const qa=P(A), px=2*L*Math.tan(tmpCam.fov*D2R/2)/VH;
+  const sl=insetSlots(), px=2*O.length()*Math.tan(tmpCam.fov*D2R/2)/VH;
+  for(let it=0;it<30;it++){
+    poseCam(tmpCam,T,O,U); tmpCam.updateMatrixWorld(true);
+    const pa=P(A), pm=P(M), dy=pm.y-pa.y;
+    const wantAy=Math.min(sl.top+sl.S+44, VH-90-Math.max(0,dy));
+    const wantMidX=(VW-84)/2, midX=(pa.x+pm.x)/2;
     const right=new THREE.Vector3().setFromMatrixColumn(tmpCam.matrixWorld,0), up=new THREE.Vector3().setFromMatrixColumn(tmpCam.matrixWorld,1);
-    T.addScaledVector(right,(qa.x-wantA.x)*px).addScaledVector(up,-(qa.y-wantA.y)*px).normalize();
+    T.addScaledVector(right,(midX-wantMidX)*px*0.6).addScaledVector(up,-(pa.y-wantAy)*px*0.6);
   }
-  return {T,L,wide:true};
+  poseCam(tmpCam,T,O,U); tmpCam.updateMatrixWorld(true);
+  const pa=P(A), room=pa.y-44-sl.top;          // space left above Adelaide for the boxes
+  if(pass===0&&room<sl.S){ insetCap=Math.max(100,room); continue; }
+  return {T,O,U,wide:true};
+  }
 }
 function shotFor(nodes){
   const mw=globe.matrixWorld, pts=nodes.map(i=>NODES[i].local.clone().applyMatrix4(mw));
   let span=0; for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++) span=Math.max(span,pts[i].distanceTo(pts[j]));
-  if(span>0.02) return solveWide(nodes);
+  if(span>0.02) return wideShot();
   const c=new THREE.Vector3(); pts.forEach(p=>c.add(p)); c.normalize();
-  return {T:c,L:span*1.3*Math.max(1,1.6/(VW/VH))+0.0009,wide:false};
+  return {...closePose(c,span*1.3*Math.max(1,1.6/(VW/VH))+0.0009),wide:false};
 }
-// smooth scripted move: zoom in log space, slide the target in step with altitude
-function goShot(T,L){
-  const r=Math.abs(Math.log(L/fc.L)), d=fc.T.distanceTo(T)/Math.max(L,fc.L);
+// smooth scripted move: distance eases in log space, target slides in step with altitude
+function goShot(T,O,U){
+  const L0=fc.O.length(), L1=O.length(), r=Math.abs(Math.log(L1/L0)), d=fc.T.distanceTo(T)/Math.max(L0,L1);
   const dur=clamp(1.3+0.32*r+0.6*d,1.3,3.4);
-  camTw={T0:fc.T.clone(),L0:fc.L,T1:T.clone().normalize(),L1:L,t:0,dur};
-  fc.dT.copy(camTw.T1); fc.dL=L; return dur;
+  camTw={T0:fc.T.clone(),O0:fc.O.clone(),U0:fc.U.clone(),T1:T.clone(),O1:O.clone(),U1:U.clone(),t:0,dur};
+  fc.dT.copy(T); fc.dO.copy(O); return dur;
 }
 function updCam(dt){
   if(camTw){
-    camTw.t+=dt; const u=clamp(camTw.t/camTw.dur,0,1), e=u*u*u*(u*(u*6-15)+10);
-    const L=Math.exp(lerp(Math.log(camTw.L0),Math.log(camTw.L1),e));
-    const sT=Math.abs(camTw.L1-camTw.L0)>camTw.L0*0.08?clamp((L-camTw.L0)/(camTw.L1-camTw.L0),0,1):e;
-    fc.T.copy(camTw.T0).lerp(camTw.T1,sT).normalize(); fc.L=L;
+    const c=camTw; c.t+=dt; const u=clamp(c.t/c.dur,0,1), e=u*u*u*(u*(u*6-15)+10);
+    const L0=c.O0.length(), L1=c.O1.length(), L=Math.exp(lerp(Math.log(L0),Math.log(L1),e));
+    const sT=Math.abs(L1-L0)>L0*0.08?clamp((L-L0)/(L1-L0),0,1):e;
+    fc.T.copy(c.T0).lerp(c.T1,sT);
+    fc.O.copy(c.O0).divideScalar(L0).lerp(c.O1.clone().divideScalar(L1),e).normalize().multiplyScalar(L);
+    fc.U.copy(c.U0).lerp(c.U1,e).normalize();
     if(u>=1) camTw=null;
   }
-  poseCam(camera,fc.T,fc.L);
+  poseCam(camera,fc.T,fc.O,fc.U);
 }
 function onUrlStep(entries){
   const set=new Set(); entries.forEach(p=>p[1].forEach(i=>set.add(i)));
   const sh=shotFor([...set]);
-  const moved=sh.T.distanceTo(fc.dT)>fc.dL*0.12||Math.abs(Math.log(sh.L/fc.dL))>0.15;
+  const L=fc.dO.length(), moved=sh.T.distanceTo(fc.dT)>L*0.12||Math.abs(Math.log(sh.O.length()/L))>0.15;
   shotWide=sh.wide;
   if(!moved) return 0;
-  const dur=goShot(sh.T,sh.L);
+  const dur=goShot(sh.T,sh.O,sh.U);
   return (dur+0.35)*speed;   // hold packets until the camera has settled (sequence time)
 }
 
@@ -630,9 +709,11 @@ const HUD0=[hudH1.textContent,hudSub.textContent];
 const urlbar=$('urlbar'), urlIn=$('url'), urlErr=$('urlerr'), runbar=$('runbar'), rbText=$('rb-text');
 function updRun(){
   $('rb-pause').textContent=paused?'Play':'Pause';
+  if(rbBase!=null) rbText.innerHTML=rbBase+pauseHint();
   $('rb-speed').textContent=speed+'×';
 }
-function setRunText(extra){ rbText.innerHTML=extra; }
+let rbBase=null;
+function setRunText(extra){ rbBase=extra; rbText.innerHTML=extra+(typeof pauseHint==='function'?pauseHint():''); }
 urlbar.addEventListener('submit',e=>{
   e.preventDefault();
   const u=parseUrl(urlIn.value);
@@ -641,43 +722,102 @@ urlbar.addEventListener('submit',e=>{
 });
 urlIn.addEventListener('input',()=>urlErr.classList.add('off'));
 $('rb-pause').onclick=()=>{ paused=!paused; stepping=false; updRun(); };
+const pauseHint=()=>paused&&mode==='url'?' · <span style="color:var(--mute)">hover a packet to inspect it</span>':'';
 $('rb-step').onclick=()=>{ if(paused){ stepping=true; paused=false; } else paused=true; updRun(); };
 $('rb-speed').onclick=()=>{ speed=speed===1?2:speed===2?4:1; updRun(); };
 $('rb-stop').onclick=()=>{ if(mode==='url') endUrl(); };
+function bootSteps(){
+  const L=[0,1], R=[1,0];
+  const phases=[['DHCP',TYPE.dhcp],['ARP',TYPE.arp]];
+  return {phases, steps:[
+    [['DHCP Discover',L,'dhcp',0,0]],
+    [['DHCP Offer',R,'dhcp',0]],
+    [['DHCP Request',L,'dhcp',0]],
+    [['DHCP ACK',R,'dhcp',0]],
+    [['ARP: who has .1?',L,'arp',0,1]],
+    [['ARP: .1 is at 3c:7a…',R,'arp',0]]
+  ]};
+}
+let journey='url', onlineMsgT=0;
+function startBoot(){
+  const b=bootSteps(); journey='boot';
+  urlInfo={kind:'boot'};
+  urlSeq=makeSeq(b.steps,b.phases,false,0.4);
+  urlSeq.onStep=onUrlStep; shotWide=false;
+  urlSeq.onSpawn=()=>{ if(stepping){ stepping=false; paused=true; updRun(); } };
+  mode='url'; paused=false; stepping=false; curSeq=urlSeq; setPhases(b.phases); setPhase(-1); clearLog();
+  fc.T.copy(_T); fc.O.copy(_O); fc.U.copy(_U); fc.dT.copy(_T); fc.dO.copy(_O); camTw=null;
+  hudH1.textContent='Connecting your laptop';
+  hudSub.textContent='Getting an address on the Norwood home network';
+  setRunText('🔌 <b>Joining the network</b>');
+  $('rb-btns').classList.remove('off'); runbar.classList.remove('off'); updRun();
+  urlbar.classList.remove('show'); $('zoom').classList.add('off');
+}
+let heldBlend=null;
+function leaveHeld(){
+  if(mode!=='held') return;
+  heldBlend={T:fc.T.clone(),O:fc.O.clone(),U:fc.U.clone(),t:0,dur:1.1};
+  mode='loop';
+}
 function startUrl(u){
+  const fromHeld=mode==='held';
+  journey='url';
   const b=buildUrlSteps(u); urlHost=b.host;
+  let hh=0; for(const c of b.host) hh=(hh*131+c.charCodeAt(0))>>>0;
+  urlInfo={...b, tcpPort:49152+hh%14000, dnsPort:50000+(hh>>>7)%14000};
   urlSeq=makeSeq(b.steps,b.phases,false,0.6);
   urlSeq.onStep=onUrlStep; shotWide=false;
   urlSeq.onSpawn=()=>{ if(stepping){ stepping=false; paused=true; updRun(); } };
   mode='url'; paused=false; stepping=false; curSeq=urlSeq; setPhases(b.phases); setPhase(-1); clearLog();
-  fc.T.copy(_T).normalize(); fc.L=_O.length(); fc.dT.copy(fc.T); fc.dL=fc.L; camTw=null;
+  if(!fromHeld){ fc.T.copy(_T); fc.O.copy(_O); fc.U.copy(_U); }
+  fc.dT.copy(fc.T); fc.dO.copy(fc.O); camTw=null;
   hudH1.textContent='Loading '+trunc(b.host,32);
-  hudSub.textContent=`Your laptop in Norwood SA → web server in Port Melbourne VIC${b.tls?'':' (plain HTTP, no TLS)'}`;
+  hudSub.textContent=`Norwood SA → Port Melbourne VIC${b.tls?'':' · plain HTTP, no TLS'}`;
   setRunText(`${b.tls?'🔒':'⚠️'} <b>${esc(u.protocol)}//</b>${esc(trunc(b.host+(u.pathname||'/'),40))}`);
   $('rb-btns').classList.remove('off'); runbar.classList.remove('off'); updRun();
   urlbar.classList.remove('show'); $('zoom').classList.add('off');
 }
 function endUrl(){
   if(urlSeq){ urlSeq.packets=[]; urlSeq.queue=[]; }
+  if(journey==='boot'&&mode==='url'){ finishBoot(); return; }
   mode='return'; paused=false; stepping=false; shotWide=false;
-  goShot(KF[4].T,KF[4].O.length());
-  $('rb-btns').classList.add('off'); setRunText('Done. Returning to your laptop…');
+  const home=shotFor([0,1]); goShot(home.T,home.O,home.U);
+  $('rb-btns').classList.add('off'); setRunText(journey==='boot'?'Your laptop is online.':'Done. Returning to your laptop…');
+}
+function finishBoot(){
+  mode='held'; paused=false; stepping=false; shotWide=false; camTw=null;
+  urlSeq=null; curSeq=loopSeq; setPhases(LOOP_PHASES); setPhase(-1);
+  hudH1.textContent=HUD0[0]; hudSub.textContent=HUD0[1];
+  runbar.classList.add('off'); $('zoom').classList.remove('off');
+  onlineMsgT=7; setTimeout(()=>{ try{ urlIn.focus({preventScroll:true}); }catch(e){} },350);
 }
 function finishReturn(){
-  mode='loop'; urlSeq=null; curSeq=loopSeq; setPhases(LOOP_PHASES); setPhase(loopSeq.phase); clearLog();
-  z=zT=1; hudH1.textContent=HUD0[0]; hudSub.textContent=HUD0[1];
+  mode='held'; urlSeq=null; curSeq=loopSeq; setPhases(LOOP_PHASES); setPhase(-1); clearLog();
+  hudH1.textContent=HUD0[0]; hudSub.textContent=HUD0[1];
   runbar.classList.add('off'); $('zoom').classList.remove('off');
+  setTimeout(()=>{ try{ urlIn.select(); urlIn.focus({preventScroll:true}); }catch(e){} },350);
+  if(journey==='boot'){ onlineMsgT=7; setTimeout(()=>{ try{ urlIn.focus({preventScroll:true}); }catch(e){} },300); }
 }
 
 /* ---------- decorative arcs (global view) ---------- */
-const HUBS=[0,14,10,21,22,9,15,26,12,13,20,29,1,33,3,8];
+const ARC_TYPES={
+  web:  {col:'#4fd8ff',name:'Web',  len:7, w:2.2,spd:[0.22,0.38],lift:1},
+  video:{col:'#ff5fd2',name:'Video',len:18,w:2.8,spd:[0.13,0.2], lift:1.15},
+  email:{col:'#ffc45a',name:'Email',len:5, w:2.0,spd:[0.1,0.16], lift:0.9},
+  dns:  {col:'#a98bff',name:'DNS',  len:3, w:1.8,spd:[0.5,0.75], lift:0.6}
+};
 const ARCS=[];
-for(let i=0;i<20;i++){
-  const a=CITIES[HUBS[i%HUBS.length]], b=CITIES[HUBS[(i*7+3)%HUBS.length]]; if(a===b) continue;
-  const A=ll(a[0],a[1]).normalize(), B=ll(b[0],b[1]).normalize(), ang=A.angleTo(B); if(ang<0.15) continue;
-  const pts=[]; for(let k=0;k<=48;k++){const t=k/48; const v=A.clone().multiplyScalar(Math.sin((1-t)*ang)/Math.sin(ang)).add(B.clone().multiplyScalar(Math.sin(t*ang)/Math.sin(ang))); v.normalize().multiplyScalar(1.002+Math.sin(Math.PI*t)*(0.03+ang*0.07)); pts.push(v);}
-  ARCS.push({pts,w:pts.map(()=>new THREE.Vector3()),off:rand(),spd:0.18+rand()*0.2,col:['#39d0ff','#7ef0ff','#ffc45a'][i%3]});
-}
+(function(){
+  const bag=['web','web','web','web','video','video','video','email','email','dns','dns'];
+  let tries=0;
+  while(ARCS.length<64&&tries<2000){ tries++;
+    const a=CITIES[Math.floor(rand()*CITIES.length)], b=CITIES[Math.floor(rand()*CITIES.length)]; if(a===b) continue;
+    const A=ll(a[0],a[1]).normalize(), B=ll(b[0],b[1]).normalize(), ang=A.angleTo(B); if(ang<0.25||ang>2.6) continue;
+    const type=bag[ARCS.length%bag.length], T=ARC_TYPES[type];
+    const pts=[]; for(let k=0;k<=56;k++){const t=k/56; const v=A.clone().multiplyScalar(Math.sin((1-t)*ang)/Math.sin(ang)).add(B.clone().multiplyScalar(Math.sin(t*ang)/Math.sin(ang))); v.normalize().multiplyScalar(1.002+Math.sin(Math.PI*t)*(0.025+ang*0.065)*T.lift); pts.push(v);}
+    ARCS.push({pts,w:pts.map(()=>new THREE.Vector3()),off:rand(),spd:lerp(T.spd[0],T.spd[1],rand()),type,col:T.col,len:T.len,lw:T.w,back:rand()<0.35});
+  }
+})();
 
 /* ---------- overlay drawing ---------- */
 function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
@@ -727,7 +867,7 @@ function nodeLabel(x,y,s,title,sub,alpha,col){
   const cands=[[x+s+8,y-h/2],[x-s-8-w,y-h/2],[x-w/2,y-s-8-h],[x-w/2,y+s+8]];
   const fits=([lx,ly])=>lx>=2&&ly>=2&&lx+w<=VW-2&&ly+h<=VH-2;
   cands.sort((p,q)=>fits(q)-fits(p));
-  for(const [lx,ly] of cands){ if(!freeRect(lx,ly,w,h)) continue;
+  for(let [lx,ly] of cands){ lx=clamp(lx,2,Math.max(2,VW-w-2)); ly=clamp(ly,2,Math.max(2,VH-h-2)); if(!freeRect(lx,ly,w,h)) continue;
     labelRects.push({x:lx,y:ly,w,h});
     ctx.globalAlpha=alpha; ctx.fillStyle='rgba(4,12,24,.82)'; ctx.strokeStyle=col||'rgba(57,208,255,.45)'; ctx.lineWidth=1;
     rr(lx,ly,w,h,6); ctx.fill(); ctx.stroke();
@@ -746,6 +886,7 @@ function placeLabel(x,y,text,alpha,size,spacing,avoid){
 
 function drawOverlay(time,netA,decoA,packets,O){
   O=O||{};
+  if(!O.inset) pktHits.length=0;
   if(!O.inset){ ctx.setTransform(DPR,0,0,DPR,0,0); ctx.clearRect(0,0,VW,VH); }
   labelRects.length=0;
   const mw=globe.matrixWorld;
@@ -755,11 +896,18 @@ function drawOverlay(time,netA,decoA,packets,O){
     ctx.lineCap='round';
     for(const A of ARCS){
       const sp=A.pts.map((p,i)=>proj(A.w[i].copy(p).applyMatrix4(mw),{}));
-      ctx.globalAlpha=decoA*0.28; ctx.strokeStyle=A.col; ctx.lineWidth=1;
+      ctx.globalAlpha=decoA*0.06; ctx.strokeStyle=A.col; ctx.lineWidth=1;
       ctx.beginPath(); let pen=false; for(const q of sp){ if(!q){pen=false;continue;} if(!pen){ctx.moveTo(q.x,q.y);pen=true;} else ctx.lineTo(q.x,q.y);} ctx.stroke();
-      const head=((time*A.spd+A.off)%1)*(sp.length-1)|0;
-      ctx.globalAlpha=decoA; ctx.lineWidth=2.2; ctx.shadowColor=A.col; ctx.shadowBlur=8; ctx.beginPath(); pen=false;
-      for(let i=Math.max(0,head-7);i<=head;i++){ const q=sp[i]; if(!q){pen=false;continue;} if(!pen){ctx.moveTo(q.x,q.y);pen=true;} else ctx.lineTo(q.x,q.y);} ctx.stroke(); ctx.shadowBlur=0;
+      if(A.back) sp.reverse();
+      const TL=A.len*2+6, hf=((time*A.spd+A.off)%1)*(sp.length-1+TL), head=hf|0;
+      ctx.shadowColor=A.col; ctx.shadowBlur=6; ctx.strokeStyle=A.col;
+      for(let i=Math.max(1,head-TL);i<=Math.min(head,sp.length-1);i++){      // trail fades and thins towards the tail
+        const a=sp[i-1], b=sp[i]; if(!a||!b) continue; const f=1-(head-i)/TL;
+        ctx.globalAlpha=decoA*0.62*f*f; ctx.lineWidth=0.6+A.lw*f;
+        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
+      const hq=sp[Math.min(head,sp.length-1)];
+      if(hq&&head<=sp.length-1){ ctx.globalAlpha=decoA*0.8; ctx.fillStyle=A.col; ctx.beginPath(); ctx.arc(hq.x,hq.y,A.lw*0.9,0,7); ctx.fill(); }
+      ctx.shadowBlur=0;
     }
     ctx.globalAlpha=1;
   }
@@ -781,11 +929,14 @@ function drawOverlay(time,netA,decoA,packets,O){
   ctx.lineCap='round'; ctx.lineJoin='round';
   for(const sg of EDGE_LIST){
     if(!isActive(sg.a)||!isActive(sg.b)) continue;
-    for(const [lw,al,col] of [[6,0.07,'#39d0ff'],[1.4,0.55,'#5fd8ff']]){
-      ctx.globalAlpha=netA*al; ctx.strokeStyle=col; ctx.lineWidth=lw; ctx.beginPath(); let pen=false;
+    if(sg.mesh&&(!idle()||meshA<0.01)) continue;
+    const eA=sg.mesh?meshA*0.75:(sg.a>=CAP0||sg.b>=CAP0)?capA:1;
+    const pal=sg.mesh?[[6,0.07,'#1fd98a'],[1.3,0.5,'#4ff0a8']]:[[6,0.07,'#39d0ff'],[1.4,0.55,'#5fd8ff']];
+    for(const [lw,al,col] of pal){
+      ctx.globalAlpha=netA*al*eA; ctx.strokeStyle=col; ctx.lineWidth=lw; ctx.beginPath(); let pen=false;
       for(const q of sg.scr){ if(!q){pen=false;continue;} if(!pen){ctx.moveTo(q.x,q.y);pen=true;} else ctx.lineTo(q.x,q.y);} ctx.stroke(); }
     // marching dashes
-    ctx.globalAlpha=netA*0.35; ctx.setLineDash([2,10]); ctx.lineDashOffset=-time*18; ctx.lineWidth=1.6; ctx.strokeStyle='#bff4ff';
+    ctx.globalAlpha=netA*0.35*eA; ctx.setLineDash([2,10]); ctx.lineDashOffset=-time*18; ctx.lineWidth=1.6; ctx.strokeStyle=sg.mesh?'#c8ffe4':'#bff4ff';
     ctx.beginPath(); let pen=false; for(const q of sg.scr){ if(!q){pen=false;continue;} if(!pen){ctx.moveTo(q.x,q.y);pen=true;} else ctx.lineTo(q.x,q.y);} ctx.stroke(); ctx.setLineDash([]);
   }
   ctx.globalAlpha=1;
@@ -828,6 +979,8 @@ function drawOverlay(time,netA,decoA,packets,O){
   const pills=[];
   for(const pk of packets){
     const q=scrAt(pk); if(!q) continue;
+    if(pk.bg){ if(pk.mesh&&meshA<0.01) continue; ctx.globalAlpha=netA*0.8*(pk.mesh?meshA:1); ctx.fillStyle=pk.col; ctx.shadowColor=pk.col; ctx.shadowBlur=8;
+      ctx.beginPath(); ctx.arc(q.x,q.y,2.6,0,7); ctx.fill(); ctx.shadowBlur=0; continue; }
     let q2=scrAt(pk,pk.s+0.004), sg=1; if(!q2){ q2=scrAt(pk,pk.s-0.004); sg=-1; }
     let tx=1,ty=0; if(q2){ tx=(q2.x-q.x)*sg; ty=(q2.y-q.y)*sg; const l=Math.hypot(tx,ty)||1; tx/=l; ty/=l; }
     const nx=-ty, ny=tx, lane=4.5;
@@ -845,6 +998,7 @@ function drawOverlay(time,netA,decoA,packets,O){
     ctx.beginPath(); ctx.arc(X,Y,lerp(2.6,4.2,sstep(0.6,1,z)),0,7); ctx.fill();
     ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(X,Y,1.3,0,7); ctx.fill(); ctx.shadowBlur=0;
     if(showPill>0.01) pills.push({pk,X,Y,nx,ny});
+    pktHits.push({pk,x:(O.ox||0)+X-9,y:(O.oy||0)+Y-9,w:18,h:18});
   }
   // node labels (after packets so they stay readable)
   const labA=netA*sstep(0.52,0.62,z);
@@ -866,7 +1020,10 @@ function drawOverlay(time,netA,decoA,packets,O){
     const tw=ctx.measureText(pk.label).width, lk=pk.enc?fs*0.8+4:0, w=tw+12+lk, h=fs+8;
     const off=12+h/2; const cx=X+nx*off, cy=Y+ny*off;
     const x=cx-w/2, y=cy-h/2;
-    ctx.globalAlpha=showPill; ctx.fillStyle=pk.col; ctx.shadowColor=pk.col; ctx.shadowBlur=10; rr(x,y,w,h,h/2); ctx.fill(); ctx.shadowBlur=0;
+    pktHits.push({pk,x:(O.ox||0)+x-3,y:(O.oy||0)+y-3,w:w+6,h:h+6});
+    const hot=hoverPk===pk;
+    ctx.globalAlpha=showPill;
+    if(hot){ ctx.strokeStyle='#fff'; ctx.lineWidth=2; rr(x-2,y-2,w+4,h+4,(h+4)/2); ctx.stroke(); } ctx.fillStyle=pk.col; ctx.shadowColor=pk.col; ctx.shadowBlur=10; rr(x,y,w,h,h/2); ctx.fill(); ctx.shadowBlur=0;
     ctx.strokeStyle='rgba(0,0,0,.35)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(X,Y); ctx.lineTo(cx-nx*h/2,cy-ny*h/2); ctx.stroke();
     if(pk.enc) drawLock(x+7,cy-fs*0.42,fs*0.8,'#071019');
     ctx.fillStyle='#071019'; ctx.fillText(pk.label,x+6+lk,cy+0.5);
@@ -888,56 +1045,174 @@ function applyLayers(alt,zz){
 function setNearFar(cam,alt){ const hor=Math.sqrt(Math.max(0,(1+alt)*(1+alt)-1)); cam.near=Math.max(alt*0.04,1e-6); cam.far=hor*1.6+0.08+(alt>0.5?4:0); cam.updateProjectionMatrix(); }
 
 /* ---------- magnifier insets ---------- */
-const INSETS=[{title:'Adelaide · Norwood to CBD',nodes:[0,1,2,3,RES]},{title:'Port Melbourne data centre',nodes:[5,HE,WS]}];
+const INSETS=[{title:'Adelaide · Norwood to CBD',nodes:[0,1,2,3,RES],slot:0},{title:'Port Melbourne data centre',nodes:[5,HE,WS],slot:1}];
 function insetPose(I){
   const mw=globe.matrixWorld, pts=I.nodes.map(i=>NODES[i].local.clone().applyMatrix4(mw));
   const c=new THREE.Vector3(); pts.forEach(p=>c.add(p)); c.normalize();
   let span=0; for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++) span=Math.max(span,pts[i].distanceTo(pts[j]));
-  const f=frame(c), L=span*1.75+0.0005, dir=f.R.clone().multiplyScalar(0.85).add(f.S.clone().multiplyScalar(0.53)).normalize();
+  const f=frame(c), dir=f.R.clone().multiplyScalar(0.95).add(f.S.clone().multiplyScalar(0.31)).normalize();
+  const asp=insetCam.aspect||2, th=Math.tan(insetCam.fov*D2R/2);
+  // extents along the view's right and up directions
+  const up0=f.N.clone().add(f.R.clone().multiplyScalar(0.5)).normalize(), right=new THREE.Vector3().crossVectors(dir,up0).normalize().negate(), up=new THREE.Vector3().crossVectors(right,dir).normalize().negate();
+  let ex=0,ey=0; pts.forEach(p=>{ const d=p.clone().sub(c); ex=Math.max(ex,Math.abs(d.dot(right))); ey=Math.max(ey,Math.abs(d.dot(up))); });
+  const L=Math.max(ex/(th*asp*0.64), ey/(th*0.42), 0.00025);
   insetCam.position.copy(c).addScaledVector(dir,L); insetCam.up.copy(f.N.clone().add(f.R.clone().multiplyScalar(0.5)).normalize()); insetCam.lookAt(c);
   setNearFar(insetCam,insetCam.position.length()-1); I.centre=c;
 }
 function renderInsets(time,packets){
   if(insetA<0.02) return;
-  const G=insetGeom(), size=G.S, sc=size*DPR/(2*Math.tan(insetCam.fov*D2R/2));
+  const G=insetSlots(), w=G.Wd, h=G.S, sc=h*DPR/(2*Math.tan(insetCam.fov*D2R/2));
   const mainCam=camera, mVW=VW, mVH=VH, mz=z;
-  // where each inset points on the main map
-  const pA=proj(NODES[1].world,{})||{x:G.g+size+60,y:G.topA+size/2}, pM=proj(NODES[5].world,{})||{x:VW-size/2,y:G.topM+size+60};
-  const A=INSETS[0], M=INSETS[1];
-  A.x=Math.round(clamp(pA.x-34-size,G.g,VW-size-G.g)); A.y=Math.round(clamp(pA.y-size/2,G.topA,Math.max(G.topA,G.logTop-size)));
-  M.x=Math.round(clamp(pM.x-size/2,A.x+size+G.g,VW-size-G.g)); M.y=Math.round(clamp(pM.y-48-size,G.topM,VH-size-G.g));
+  insetCam.aspect=w/h;
+  INSETS.forEach(I=>{
+    const x=I.user?I.user.fx*VW-w/2:G.xs[I.slot], y=I.user?I.user.fy*VH-h/2:G.top;
+    I.x=Math.round(clamp(x,0,VW-w)); I.y=Math.round(clamp(y,0,VH-h)); I.w=w; I.h=h; });
   INSETS.forEach(I=>{ insetPose(I); I.anchor=proj(I.centre,{}); });
   const prevScale=dotLayers.map(L=>L.u.uScale.value);
   renderer.setScissorTest(true);
   for(const I of INSETS){
-    renderer.setViewport(I.x,VH-I.y-size,size,size); renderer.setScissor(I.x,VH-I.y-size,size,size);
+    renderer.setViewport(I.x,VH-I.y-h,w,h); renderer.setScissor(I.x,VH-I.y-h,w,h);
     renderer.setClearColor(0x030a15,1); renderer.clear();
     dotLayers.forEach(L=>L.u.uScale.value=sc); applyLayers(insetCam.position.length()-1,1);
     insetPose(I); renderer.render(scene,insetCam);
   }
   renderer.setScissorTest(false); renderer.setViewport(0,0,VW,VH); renderer.setClearColor(0x02050b,1);
   dotLayers.forEach((L,i)=>L.u.uScale.value=prevScale[i]);
-  // leader lines on the main map
   ctx.setTransform(DPR,0,0,DPR,0,0);
   for(const I of INSETS){ if(!I.anchor) continue;
     ctx.globalAlpha=insetA; ctx.strokeStyle='#39d0ff'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(I.anchor.x,I.anchor.y,9,0,7); ctx.stroke(); }
-  // overlay inside each inset
   for(const I of INSETS){
-    insetPose(I); camera=insetCam; VW=VH=size; z=1;
-    ctx.save(); ctx.setTransform(DPR,0,0,DPR,0,0); ctx.translate(I.x,I.y);
-    ctx.beginPath(); ctx.rect(0,0,size,size); ctx.clip();
-    drawOverlay(time,1,0,packets,{inset:true,scale:size<200?0.62:size<300?0.8:0.95});
+    insetPose(I); camera=insetCam; VW=w; VH=h; z=1;
+    ctx.setTransform(DPR,0,0,DPR,0,0); ctx.clearRect(I.x,I.y,w,h);
+    ctx.save(); ctx.translate(I.x,I.y);
+    ctx.beginPath(); ctx.rect(0,0,w,h); ctx.clip();
+    drawOverlay(time,1,0,packets,{inset:true,ox:I.x,oy:I.y,scale:h<160?0.72:h<240?0.85:0.95});
     ctx.restore();
     camera=mainCam; VW=mVW; VH=mVH; z=mz;
     ctx.setTransform(DPR,0,0,DPR,0,0); ctx.globalAlpha=insetA;
     ctx.strokeStyle='rgba(57,208,255,.7)'; ctx.lineWidth=1.5; ctx.shadowColor='#39d0ff'; ctx.shadowBlur=12;
-    ctx.strokeRect(I.x+0.5,I.y+0.5,size-1,size-1); ctx.shadowBlur=0;
+    ctx.strokeRect(I.x+0.5,I.y+0.5,w-1,h-1); ctx.shadowBlur=0;
     ctx.font='600 10.5px "Segoe UI",system-ui,sans-serif'; const tw=ctx.measureText(I.title).width+12;
-    ctx.fillStyle='rgba(4,12,24,.9)'; ctx.fillRect(I.x,I.y,Math.min(tw,size),18);
+    ctx.fillStyle='rgba(4,12,24,.9)'; ctx.fillRect(I.x,I.y,Math.min(tw,w),18);
     ctx.fillStyle='#bfe9ff'; ctx.textBaseline='middle'; ctx.textAlign='left'; ctx.fillText(I.title,I.x+6,I.y+9.5);
   }
   ctx.globalAlpha=1;
 }
+
+// drag the magnifier boxes
+let dragI=null, dragDX=0, dragDY=0;
+const insetAt=(x,y)=>{ if(insetA<0.3) return null; for(let k=INSETS.length-1;k>=0;k--){ const I=INSETS[k]; if(I.w&&x>=I.x&&x<=I.x+I.w&&y>=I.y&&y<=I.y+I.h) return I; } return null; };
+glc.addEventListener('pointerdown',e=>{ const I=insetAt(e.clientX,e.clientY); if(!I) return;
+  dragI=I; dragDX=e.clientX-I.x; dragDY=e.clientY-I.y; glc.setPointerCapture(e.pointerId); glc.style.cursor='grabbing';
+  INSETS.push(INSETS.splice(INSETS.indexOf(I),1)[0]); e.stopImmediatePropagation(); });
+glc.addEventListener('pointermove',e=>{
+  if(dragI){ const w=dragI.w, h=dragI.h; dragI.user={fx:(clamp(e.clientX-dragDX,0,VW-w)+w/2)/VW, fy:(clamp(e.clientY-dragDY,0,VH-h)+h/2)/VH}; return; }
+  glc.style.cursor=insetAt(e.clientX,e.clientY)?'grab':''; });
+const endDrag=()=>{ if(dragI){ dragI=null; glc.style.cursor=''; } };
+glc.addEventListener('pointerup',endDrag); glc.addEventListener('pointercancel',endDrag);
+
+/* ---------- packet inspector (URL journey, while paused) ---------- */
+const pktHits=[]; let hoverPk=null;
+const NET={ privIP:'192.168.1.23', pubIP:'198.51.100.23', resIP:'198.51.100.53', gwIP:'192.168.1.1' };
+const MAC={0:'a4:83:e7:2b:51:9c',1:'3c:7a:8a:10:4e:01',2:'00:1b:54:c2:7d:10',3:'00:25:90:6a:e1:33',4:'00:26:cb:41:0f:a4',
+  5:'00:1c:73:98:22:5e',[RES]:'52:54:00:3d:a1:53',[HE]:'00:0c:db:7f:12:e6',[WS]:'0c:c4:7a:58:b9:02'};
+const pktEl=$('pkt');
+function bootInfo(pk){
+  const L=pk.label, toRouter=pk.route[0]===0, BC='ff:ff:ff:ff:ff:ff';
+  const lap=MAC[0], gw=MAC[1], link=`${NODES[pk.route[0]].short} → ${NODES[pk.route[1]].short}`;
+  if(pk.type==='arp'){
+    return toRouter
+      ? {name:'ARP Request',tag:'L2',arp:true,l7:'Who has 192.168.1.1? Tell 192.168.1.23',smac:lap,dmac:BC,bc:true,link}
+      : {name:'ARP Reply',tag:'L2',arp:true,l7:'192.168.1.1 is at '+gw,smac:gw,dmac:lap,link};
+  }
+  const t=L.replace('DHCP ','');
+  const D={Discover:{l7:'Is there a DHCP server? I need an address',sip:'0.0.0.0',dip:'255.255.255.255',ipn:'No address yet, so the source is 0.0.0.0 and it is sent to everyone',bc:true},
+    Offer:{l7:'You can have 192.168.1.23 · mask 255.255.255.0',sip:'192.168.1.1',dip:'255.255.255.255',ipn:'Broadcast, because the laptop has no address yet'},
+    Request:{l7:'I would like 192.168.1.23, please',sip:'0.0.0.0',dip:'255.255.255.255',ipn:'Still broadcast: the laptop has not confirmed its address',bc:true},
+    ACK:{l7:'192.168.1.23 is yours for 24 h · gateway 192.168.1.1 · DNS 198.51.100.53',sip:'192.168.1.1',dip:'192.168.1.23',ipn:'The laptop now owns 192.168.1.23'}}[t];
+  return {name:'DHCP '+t,tag:'L7',l7:D.l7,proto:'UDP',sp:toRouter?68:67,dp:toRouter?67:68,sip:D.sip,dip:D.dip,nat:D.ipn,
+    smac:toRouter?lap:gw,dmac:D.bc?BC:lap,bc:!!D.bc,link};
+}
+function layerInfo(pk){
+  if(urlInfo&&urlInfo.kind==='boot') return bootInfo(pk);
+  const I=urlInfo, r=pk.route, last=r.length-1, k=Math.min(Math.floor(pk.s),last-1), a=r[k], b=r[k+1];
+  const fromClient=r[0]===0, peer=fromClient?r[last]:r[0];
+  const onHomeLink=(a===0&&b===1)||(a===1&&b===0);
+  const cliIP=onHomeLink?NET.privIP:NET.pubIP, peerIP=peer===RES?NET.resIP:I.ip;
+  const dns=pk.type==='dns', cliPort=dns?I.dnsPort:I.tcpPort, srvPort=dns?53:I.port;
+  let name, tag, l7=null;
+  const L=pk.label;
+  if(dns){ if(fromClient){ name='DNS Query'; l7=`A record for ${I.host}?`; } else { name='DNS Response'; l7=`${I.host} is at ${I.ip}`; } tag='L7'; }
+  else if(pk.type==='tls'){ name='TLS '+L; tag='L6'; l7=pk.enc?'Handshake message, encrypted':'Handshake message, readable'; if(L==='close_notify') l7='Alert: closing the secure session'; }
+  else if(pk.type==='req'){ name='HTTP '+L.split(' ')[0]; tag='L7'; l7=`${L} · Host: ${I.host}`; }
+  else if(pk.type==='res'){ name=L==='200 OK'?'HTTP 200 OK':'HTTP response data'; tag='L7'; l7=L==='200 OK'?'Status line and headers':`Body: ${L} content`; }
+  else { const flag=L.split(' ')[0]; name='TCP '+flag; tag='L4'; l7=null; }
+  return { name, tag, l7, enc:pk.enc, proto:dns?'UDP':'TCP',
+    sp:fromClient?cliPort:srvPort, dp:fromClient?srvPort:cliPort,
+    sip:fromClient?cliIP:peerIP, dip:fromClient?peerIP:cliIP,
+    smac:MAC[a], dmac:MAC[b], link:`${NODES[a].short} → ${NODES[b].short}`, nat:onHomeLink?'Private address inside the home, before NAT':'Public address, after NAT at the home router' };
+}
+function showPkt(pk,mx,my){
+  const d=layerInfo(pk);
+  pktEl.style.setProperty('--c',pk.col);
+  const pdu=d.proto==='UDP'?'datagram':'segment';
+  pktEl.innerHTML=`<div class="hd"><span class="nm">${d.enc?'🔒 ':''}${esc(d.name)}</span><span class="lt">${d.tag}</span></div>
+  <div class="rows">
+    ${d.arp?`<div class="row"><span class="lt">L2</span><div><b>ARP message</b><span>${esc(d.l7)}</span><em>ARP has no IP header or ports: it rides directly inside the Ethernet frame</em></div></div>`:''}
+    ${!d.arp&&d.l7?`<div class="row"><span class="lt">${d.tag==='L6'?'L6':'L7'}</span><div><b>${d.tag==='L6'?'TLS record':'Application data'}</b><span>${esc(d.l7)}</span>${d.enc&&d.tag==='L7'?'<em>Carried inside TLS, so routers cannot read it</em>':''}</div></div>`:''}
+    ${d.arp?'':`<div class="row"><span class="lt">L4</span><div><b>${d.proto} ${pdu} · ports</b><span>${d.sp} → ${d.dp}</span></div></div>
+    <div class="row"><span class="lt">L3</span><div><b>IP packet · addresses</b><span>${d.sip} → ${d.dip}</span><em>${esc(d.nat)}</em></div></div>`}
+    <div class="row"><span class="lt">L2</span><div><b>Ethernet frame · MACs on this link</b><span>${d.smac} → ${d.dmac}</span>${d.bc?'<em>ff:ff:ff:ff:ff:ff is the broadcast address: every device on the LAN receives it</em>':''}</div></div>
+  </div>
+  <div class="hop">On the link: ${esc(d.link)}</div>`;
+  const r=pktEl.getBoundingClientRect(), w=r.width||290, h=r.height||220;
+  let x=mx+16, y=my+16; if(x+w>VW-8) x=mx-w-16; if(y+h>VH-8) y=my-h-16;
+  pktEl.style.left=clamp(x,8,VW-w-8)+'px'; pktEl.style.top=clamp(y,8,VH-h-8)+'px';
+  pktEl.classList.add('show');
+}
+function hidePkt(){ hoverPk=null; pktEl.classList.remove('show'); }
+let lastMouse=null;
+glc.addEventListener('pointermove',e=>{ lastMouse={x:e.clientX,y:e.clientY}; });
+glc.addEventListener('pointerleave',()=>{ lastMouse=null; hidePkt(); });
+function updInspector(){
+  if(mode!=='url'||!paused||!urlInfo||!lastMouse||dragI){ if(hoverPk) hidePkt(); if(mode==='url'&&paused&&!dragI) glc.style.cursor=''; return; }
+  let hit=null; for(let i=pktHits.length-1;i>=0;i--){ const h=pktHits[i]; if(lastMouse.x>=h.x&&lastMouse.x<=h.x+h.w&&lastMouse.y>=h.y&&lastMouse.y<=h.y+h.h){ hit=h.pk; break; } }
+  if(hit){ hoverPk=hit; showPkt(hit,lastMouse.x,lastMouse.y); glc.style.cursor='help'; }
+  else { if(hoverPk) hidePkt(); if(!insetAt(lastMouse.x,lastMouse.y)) glc.style.cursor=''; }
+}
+
+/* ---------- begin journey ---------- */
+const BEGIN_Z=0.68;
+function resetLoop(){
+  const S=loopSeq; S.packets=[]; S.queue=[]; S.stepIdx=-1; S.left=0; S.waitT=0.8+0; S.done=false;
+  setPhase(-1); clearLog();
+}
+$('begin').addEventListener('click',()=>{
+  if(mode==='held') leaveHeld();
+  if(mode!=='loop'||beginTw) return;
+  loopOn=true;
+  const dist=Math.abs(BEGIN_Z-z);
+  if(dist<0.02&&z>=BEGIN_Z){ startBoot(); return; }
+  beginTw={from:z,t:0,dur:clamp(1.2+dist*6,1.2,5),then:startBoot};
+});
+
+/* ---------- full screen ---------- */
+(function(){
+  const btn=$('fs'), root=document.documentElement;
+  const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+  const canFs=()=>!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);
+  function sync(){ const on=!!fsEl(); $('fs-in').style.display=on?'none':''; $('fs-out').style.display=on?'':'none';
+    btn.title=on?'Exit full screen':'Full screen'; btn.setAttribute('aria-label',btn.title); }
+  function openTab(){ try{ window.open(location.href,'_blank','noopener'); }catch(e){} }
+  btn.addEventListener('click',()=>{
+    if(fsEl()){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); return; }
+    if(!canFs()){ openTab(); return; }           // iframe without fullscreen permission: open in a new tab
+    const req=root.requestFullscreen||root.webkitRequestFullscreen;
+    try{ const p=req.call(root); if(p&&p.catch) p.catch(openTab); }catch(e){ openTab(); }
+  });
+  document.addEventListener('fullscreenchange',sync); document.addEventListener('webkitfullscreenchange',sync);
+  sync();
+})();
 
 /* ---------- main loop ---------- */
 let spin=0.6, last=performance.now(), time=0;
@@ -945,7 +1220,10 @@ const stageEl=$('stage'), hint=$('hint');
 let stageTxt='';
 function frameLoop(now){
   const dt=clamp((now-last)/1000,0,0.05); last=now; time+=dt;
-  if(mode==='loop'){ z+= (zT-z)*Math.min(1,dt*3.2); if(Math.abs(zT-z)<1e-4) z=zT; }
+  if(mode==='loop'&&beginTw){ beginTw.t+=dt; const u=clamp(beginTw.t/beginTw.dur,0,1), e=u*u*u*(u*(u*6-15)+10);
+    z=zT=lerp(beginTw.from,BEGIN_Z,e); if(u>=1){ const f=beginTw.then; beginTw=null; if(f) f(); } }
+  else if(mode==='loop'){ z+= (zT-z)*Math.min(1,dt*3.2); if(Math.abs(zT-z)<1e-4) z=zT; }
+  if(!loopOn&&z>0.36) loopOn=true;    // zooming in by hand also starts the traffic
 
   // globe rotation: spin when zoomed out, then turn to face Australia
   spin+=dt*0.12*(1-sstep(0,0.1,z));
@@ -957,7 +1235,14 @@ function frameLoop(now){
   const satA=1-sstep(0.18,0.38,z); satRings.forEach(r=>{r.ring.material.opacity=0.18*satA; r.L.u.uOpacity.value=satA; r.grp.visible=satA>0.01;});
 
   // camera
-  if(mode==='loop') cameraAt(z);
+  if(mode==='loop'){
+    cameraAt(z);
+    if(heldBlend){ const B=heldBlend; B.t+=dt; const u=clamp(B.t/B.dur,0,1), e=1-u*u*u*(u*(u*6-15)+10);
+      const T=camera.position.clone().sub(_O), L0=_O.length(), L1=B.O.length(), L=Math.exp(lerp(Math.log(L0),Math.log(L1),e));
+      const Tm=T.lerp(B.T,e), Om=_O.clone().divideScalar(L0).lerp(B.O.clone().divideScalar(L1),e).normalize().multiplyScalar(L);
+      camera.position.copy(Tm).add(Om); camera.up.copy(_U.clone().lerp(B.U,e).normalize()); camera.lookAt(Tm);
+      if(u>=1) heldBlend=null; }
+  }
   else updCam(dt);
   const alt=camera.position.length()-1;
   if(mode!=='loop'){ z=zT=Math.max(0.62,zFromAlt(alt)); }
@@ -969,8 +1254,10 @@ function frameLoop(now){
   applyLayers(alt,z);
 
   // traffic
+  capA=clamp(capA+dt*(idle()?1.5:-3),0,1);
+  meshA=capA*(1-sstep(0.5,0.64,z));   // full mesh at the Australia view, thinning out towards Adelaide
   for(const n of NODES) n.flash=Math.max(0,n.flash-dt*1.6);
-  if(mode==='loop'){ seqUpdate(loopSeq,dt); seqMove(loopSeq,dt,false); }
+  if(idle()){ if(loopOn&&!beginTw){ bgSpawn(dt); seqMove(loopSeq,dt,false); } }
   else if(mode==='url'&&urlSeq){
     if(!paused){ const sdt=dt*speed; seqUpdate(urlSeq,sdt); seqMove(urlSeq,sdt,true); }
     if(urlSeq.done) endUrl();
@@ -982,29 +1269,33 @@ function frameLoop(now){
 
   const netA=sstep(0.36,0.5,z);
   const decoA=1-sstep(0.18,0.4,z);
-  const pk=mode==='loop'?loopSeq.packets:(urlSeq?urlSeq.packets:[]);
+  const pk=idle()?loopSeq.packets:(urlSeq?urlSeq.packets:[]);
   drawOverlay(time,netA,decoA,pk,{});
   const settled=!camTw;
   insetA=clamp(insetA+dt*((mode==='url'&&shotWide&&settled)?2.5:-4),0,1);
   renderInsets(time,pk);
+  updInspector();
   applyLayers(alt,z);
 
   // ui
   let st=STAGES[0][1]; for(const [v,n] of STAGES) if(z>=v) st=n;
   if(st!==stageTxt){ stageTxt=st; stageEl.innerHTML=`<b>${Math.round(z*100)}%</b> · ${st}`; }
   else stageEl.firstChild.textContent=Math.round(z*100)+'%';
-  stageEl.classList.toggle('off',mode!=='loop');
+  stageEl.classList.toggle('off',!idle());
   // address bar beside the laptop
-  const lp=NODES[0].scr, showBar=mode==='loop'&&z>0.9&&lp&&onScreen(lp,0);
+  const lp=NODES[0].scr, showBar=((mode==='loop'&&z>0.9)||mode==='held')&&lp&&onScreen(lp,0);
   if(showBar){ const bw=urlbar.offsetWidth||360;
     const minL=VW>700?274:12; const L=clamp(lp.x-bw*0.35,minL,Math.max(minL,VW-bw-84)); const hr=$('hud').getBoundingClientRect(); let T=clamp(lp.y+46,60,VH-130); if(L<hr.right+8) T=Math.max(T,hr.bottom+10); urlbar.style.left=L+'px'; urlbar.style.top=T+'px'; }
   if(showBar!==urlbar.classList.contains('show')){ urlbar.classList.toggle('show',showBar); if(!showBar) urlIn.blur(); }
-  const hintTxt=mode!=='loop'?'':zT<0.03?'Scroll, or drag the zoom bar, to fly in':(z>0.8&&z<=0.9)?'Zoom all the way in to the laptop to type a web address':'';
+  if(onlineMsgT>0) onlineMsgT-=dt;
+  const hintTxt=!idle()?'':onlineMsgT>0?'Your laptop is online. Type a web address.':(zT<0.03&&!beginTw)?'Press Begin Journey, or scroll to fly in':(z>0.8&&z<=0.9)?'Zoom all the way in to the laptop to type a web address':'';
   if(hintTxt) hint.textContent=hintTxt;
   thumb.style.top=((1-zT)*100)+'%'; fill.style.height=(zT*100)+'%';
   track.setAttribute('aria-valuenow',Math.round(zT*100));
   hint.style.opacity=hintTxt?1:0;
+  $('begin').disabled=!idle();
   $('log').style.opacity=sstep(0.3,0.45,z);
+  $('legend').style.opacity=idle()?decoA:0;
   requestAnimationFrame(frameLoop);
 }
 setPhase(-1);
