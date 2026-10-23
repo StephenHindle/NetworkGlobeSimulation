@@ -77,19 +77,72 @@
   #pkt .row span{color:#9fbad3;font-family:ui-monospace,Consolas,Menlo,monospace;font-size:11.5px;word-break:break-all}
   #pkt .row em{display:block;margin-top:2px;font-style:normal;color:#ffc45a;font-family:"Segoe UI",system-ui,sans-serif;font-size:10.5px}
   #pkt .hop{padding:0 10px 8px;color:var(--mute);font-size:10.5px}
+  #pkt .why{padding:8px 10px 7px;font-size:11.5px;line-height:1.4;color:#e6f4ff;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08)}
+  #pkt .why b{display:block;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--c);margin-bottom:2px}
   #fs{position:absolute;top:12px;right:12px;z-index:6;width:38px;height:38px;border-radius:9px;border:1px solid var(--line);
     background:var(--panel);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;
     backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
   #fs:hover{background:rgba(57,208,255,.22);border-color:var(--accent)}
   #fs svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-  #urlbar{z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:7px;width:min(390px,calc(100% - 110px));
+  #urlbar{position:absolute;z-index:5;display:block;padding:0;overflow:hidden;width:min(390px,calc(100% - 110px));
+    background:#1b2433;border:1px solid rgba(120,170,220,.35);border-radius:10px;box-shadow:0 14px 40px rgba(0,0,0,.55),0 0 0 1px rgba(0,0,0,.4);
     opacity:0;pointer-events:none;transition:opacity .3s}
   #urlbar.show{opacity:1;pointer-events:auto}
-  #urlhd{flex-basis:100%;font-size:10.5px;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;padding:0 3px}
-  #url{flex:1;min-width:0;background:#020a14;border:1px solid var(--line);border-radius:7px;color:var(--ink);
-    font:13px "Segoe UI",system-ui,sans-serif;padding:7px 9px;outline:none;user-select:text;-webkit-user-select:text}
-  #url:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(57,208,255,.2)}
-  #urlerr{flex-basis:100%;font-size:11px;color:var(--fin);padding:0 3px}
+  .bw-top{display:flex;align-items:flex-end;gap:10px;height:30px;padding:0 8px 0 10px;background:#121a26}
+  .bw-dots{display:flex;gap:6px;align-self:center}
+  .bw-dots i{width:10px;height:10px;border-radius:50%;display:block}
+  .bw-dots i:nth-child(1){background:#ff5f57}.bw-dots i:nth-child(2){background:#febc2e}.bw-dots i:nth-child(3){background:#28c840}
+  .bw-tab{display:flex;align-items:center;gap:6px;min-width:0;max-width:200px;height:24px;padding:0 12px;background:#1b2433;border-radius:8px 8px 0 0;
+    font-size:11.5px;color:#d8e6f5;white-space:nowrap}
+  #tabtitle{overflow:hidden;text-overflow:ellipsis}
+  #tabico{width:12px;height:12px;flex:0 0 12px;border-radius:50%;border:2px solid #6f86a0}
+  #tabico.loading{border-color:#39d0ff #39d0ff transparent transparent;animation:spin .8s linear infinite}
+  #tabico.done{border:none;background:#8aa4c0}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  #urlhd{margin-left:auto;align-self:center;font-size:10px;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+  .bw-bar{display:flex;align-items:center;gap:6px;padding:6px 7px;background:#1b2433;border-bottom:1px solid rgba(0,0,0,.45)}
+  .bw-nav{display:flex;gap:2px;color:#7f93aa;font-size:14px;line-height:1}
+  .bw-nav span{width:20px;text-align:center}
+  .omni{position:relative;flex:1;min-width:0;display:flex;align-items:center;gap:6px;background:#0d141e;border:1px solid rgba(120,170,220,.25);
+    border-radius:999px;padding:0 10px;overflow:hidden}
+  .omni:focus-within{border-color:var(--accent);box-shadow:0 0 0 2px rgba(57,208,255,.2)}
+  #lock{font-size:11px;color:#8aa4c0;white-space:nowrap;flex:0 0 auto}
+  #lock.ok{color:#5cff9d}#lock.warn{color:#ffb347}
+  #url{flex:1;min-width:0;background:transparent;border:none;color:var(--ink);
+    font:13px "Segoe UI",system-ui,sans-serif;padding:6px 0;outline:none;user-select:text;-webkit-user-select:text}
+  #url[readonly]{color:#bcd3ea}
+  #prog{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);box-shadow:0 0 6px var(--accent);transition:width .4s,opacity .5s}
+  #urlerr{font-size:11px;color:var(--fin);padding:4px 10px;background:#1b2433}
+  #page{height:min(230px,30vh);background:#fff;color:#202124;overflow:hidden;position:relative;font-family:Arial,"Segoe UI",sans-serif;user-select:none}
+  #urlbar.docked #page{height:min(200px,24vh)}
+  .np{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:#f1f3f6;color:#4a5563;text-align:center;padding:12px}
+  .np b{font-size:15px;color:#1f2937}
+  .np .k{font-family:ui-monospace,Consolas,monospace;background:#fff;border:1px solid #cfd6df;border-radius:5px;padding:1px 6px;color:#0b57d0}
+  .np small{font-size:11px;color:#6b7684}
+  .ld{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#fff;color:#5f6368;font-size:12.5px}
+  .ld .sp{width:22px;height:22px;border-radius:50%;border:3px solid #d6e2f0;border-top-color:#1a73e8;animation:spin .8s linear infinite}
+  .sp-page{height:100%;display:flex;flex-direction:column;background:#fff}
+  .sp-top{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:8px 12px;font-size:11px;color:#3c4043}
+  .sp-top .av{width:22px;height:22px;border-radius:50%;background:#8e9cb0}
+  .sp-top .si{background:#1a73e8;color:#fff;border-radius:4px;padding:3px 9px}
+  .sp-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:0 18px}
+  .sp-logo{display:flex;align-items:center;gap:8px;font:600 28px Georgia,"Times New Roman",serif;color:#3c4043;letter-spacing:.01em}
+  .sp-logo svg{width:28px;height:28px}
+  .sp-box{width:100%;max-width:300px;height:32px;border:1px solid #dfe1e5;border-radius:16px;display:flex;align-items:center;gap:8px;padding:0 12px;
+    box-shadow:0 1px 4px rgba(32,33,36,.12)}
+  .sp-box svg{width:14px;height:14px;flex:0 0 14px}
+  .sp-box .caret{width:1px;height:15px;background:#202124;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .sp-btns{display:flex;gap:8px}
+  .sp-btns span{background:#f3f4f6;border:1px solid #f3f4f6;border-radius:4px;padding:5px 11px;font-size:11px;color:#3c4043}
+  .sp-foot{background:#f2f2f2;border-top:1px solid #e4e4e4;padding:6px 12px;font-size:10px;color:#70757a;display:flex;justify-content:space-between;gap:8px}
+  .sk{background:linear-gradient(90deg,#eceff3,#f6f8fa,#eceff3);background-size:200% 100%;animation:shim 1.2s linear infinite;border-radius:4px}
+  @keyframes shim{to{background-position:-200% 0}}
+  .gp-head{background:#0b57d0;color:#fff;padding:9px 12px;font-size:12px;font-weight:700}
+  .gp-body{padding:12px;display:flex;flex-direction:column;gap:8px}
+  .gp-body h2{margin:0;font-size:16px;color:#202124}
+  .gp-body p{margin:0;font-size:11.5px;color:#5f6368}
+  .gp-ln{height:8px;border-radius:4px;background:#e8ebef}
   .btn{border:1px solid var(--line);background:rgba(57,208,255,.12);color:var(--ink);border-radius:7px;
     font:600 12px "Segoe UI",system-ui,sans-serif;padding:7px 11px;cursor:pointer;white-space:nowrap}
   .btn:hover{background:rgba(57,208,255,.25)}
@@ -135,11 +188,23 @@
     <div id="zlab">ZOOM</div>
   </div>
   <div id="hint">Scroll, or drag the zoom bar, to fly in</div>
-  <form id="urlbar" class="panel" autocomplete="off">
-    <div id="urlhd">Your laptop's browser</div>
-    <input id="url" type="text" spellcheck="false" inputmode="url" placeholder="Type a web address, like www.adelaide.edu.au" aria-label="Web address">
-    <button class="btn go" type="submit">Go</button>
+  <form id="urlbar" autocomplete="off">
+    <div class="bw-top">
+      <span class="bw-dots"><i></i><i></i><i></i></span>
+      <div class="bw-tab"><span id="tabico"></span><span id="tabtitle">New tab</span></div>
+      <div id="urlhd">Your laptop</div>
+    </div>
+    <div class="bw-bar">
+      <span class="bw-nav" aria-hidden="true"><span>‹</span><span>›</span><span>↻</span></span>
+      <div class="omni">
+        <span id="lock">⌕</span>
+        <input id="url" type="text" spellcheck="false" inputmode="url" placeholder="Type google.com" aria-label="Web address">
+        <div id="prog"></div>
+      </div>
+      <button class="btn go" id="gobtn" type="submit">Go</button>
+    </div>
     <div id="urlerr" class="off"></div>
+    <div id="page"></div>
   </form>
   <div id="runbar" class="panel off">
     <div id="rb-text"></div>
@@ -174,8 +239,7 @@ function bitReader(b64){ const s=atob(b64), a=new Uint8Array(s.length); for(let 
 /* ---------- renderer ---------- */
 const glc=$('gl'), ov=$('ov'), ctx=ov.getContext('2d');
 let renderer;
-const DPR_CAP=1.5; let dprCap=DPR_CAP;
-try{ renderer=new THREE.WebGLRenderer({canvas:glc,antialias:(window.devicePixelRatio||1)<1.5,powerPreference:'high-performance'}); }
+try{ renderer=new THREE.WebGLRenderer({canvas:glc,antialias:true}); }
 catch(e){ fail('WebGL is not available in this browser.'); return; }
 renderer.setClearColor(0x02050b,1);
 renderer.autoClear=false;
@@ -187,7 +251,7 @@ const globe=new THREE.Group(); scene.add(globe);
 
 /* ---------- dot layers ---------- */
 const DOT_VS=`
-uniform float uSize; uniform float uScale; uniform float uMax; uniform float uSelf; uniform float uNext; uniform float uOpacity;
+uniform float uSize; uniform float uScale; uniform float uMax; uniform float uSelf; uniform float uNext;
 attribute float aShade; attribute float aOwn; attribute float aIn; varying float vA; varying float vS;
 void main(){
   vec4 mv=modelViewMatrix*vec4(position,1.0);
@@ -196,7 +260,6 @@ void main(){
   float f=dot(n,normalize(-mv.xyz));
   vA=clamp(px*px,0.0,1.0)*smoothstep(-0.02,0.3,f)*mix(1.0,aOwn,1.0)*uSelf*(1.0-aIn*uNext);
   vS=aShade;
-  if(vA*uOpacity<0.004){ gl_PointSize=0.0; gl_Position=vec4(2.0,2.0,2.0,1.0); return; }   // skip: nothing to draw
   gl_PointSize=clamp(px,1.0,uMax);
   gl_Position=projectionMatrix*mv;
 }`;
@@ -237,16 +300,14 @@ function gridLayer(g,size,color,max,ownM,next,nextM){
   for(let j=0;j<g.ny;j++) for(let i=0;i<g.nx;i++,k++){ if(!rd(k)) continue;
     const lat=g.lat0+(j+(rand()-0.5)*0.42)*g.step, lon=g.lon0+(i+(rand()-0.5)*0.42)*g.step, v=ll(lat,lon,1); pos.push(v.x,v.y,v.z);
     own.push(ownM?feather(g,ownM,lat,lon):1); inn.push(feather(next,nextM,lat,lon)); }
-  const L=makeDots(pos,size,color,max,null,own,inn);
-  L.p.geometry.computeBoundingSphere(); L.p.frustumCulled=true;
-  return L;
+  return makeDots(pos,size,color,max,null,own,inn);
 }
 const LY1=gridLayer(DATA.g1,0.0012,0x3fd0ff,7,0,DATA.g2,0.45);
 const LY2=DATA.g2.map((g,i)=>gridLayer(g,0.00016,0x45d6ff,7,0.45,DATA.g3[i],0.09));
 const LY3=DATA.g3.map(g=>gridLayer(g,0.000028,0x4fdcff,6,0.09,null,0));
 
 /* ---------- ocean, atmosphere ---------- */
-const ocean=new THREE.Mesh(new THREE.SphereGeometry(0.997,128,80),new THREE.ShaderMaterial({
+const ocean=new THREE.Mesh(new THREE.SphereGeometry(0.997,192,128),new THREE.ShaderMaterial({
   vertexShader:`varying vec3 vN; varying vec3 vV; void main(){ vec4 mv=modelViewMatrix*vec4(position,1.0); vN=normalize(normalMatrix*normal); vV=normalize(-mv.xyz); gl_Position=projectionMatrix*mv; }`,
   fragmentShader:`varying vec3 vN; varying vec3 vV; void main(){ float f=1.0-max(dot(vN,vV),0.0); vec3 c=mix(vec3(0.008,0.025,0.055),vec3(0.03,0.17,0.30),pow(f,2.6)); gl_FragColor=vec4(c,1.0);} `
 }));
@@ -440,7 +501,7 @@ function zFromAlt(alt){
 /* ---------- sizing ---------- */
 let VW=1,VH=1,DPR=1;
 function resize(){
-  VW=Math.max(1,innerWidth); VH=Math.max(1,innerHeight); DPR=Math.min(window.devicePixelRatio||1,dprCap);
+  VW=Math.max(1,innerWidth); VH=Math.max(1,innerHeight); DPR=Math.min(window.devicePixelRatio||1,2);
   renderer.setPixelRatio(DPR); renderer.setSize(VW,VH,false);
   ov.width=Math.round(VW*DPR); ov.height=Math.round(VH*DPR);
   camera.aspect=starCam.aspect=VW/VH; camera.updateProjectionMatrix(); starCam.updateProjectionMatrix();
@@ -479,7 +540,7 @@ const TYPE={tcp:'#ffb347',tls:'#c792ff',req:'#4fd8ff',res:'#5cff9d',fin:'#ff6b8b
 let phEls=[], curSeq=null;
 function setPhases(list){ const box=$('phases'); box.innerHTML='';
   phEls=list.map(([n,c])=>{const d=document.createElement('div');d.className='ph';d.style.setProperty('--c',c);d.innerHTML='<i></i>'+n;box.appendChild(d);return d;}); }
-function setPhase(i){ phEls.forEach((e,k)=>e.classList.toggle('on',k===i)); if(curSeq) curSeq.phase=i; }
+function setPhase(i){ phEls.forEach((e,k)=>e.classList.toggle('on',k===i)); if(curSeq) curSeq.phase=i; if(i>=0&&curSeq&&curSeq.phases&&typeof onPhase==='function') onPhase(curSeq.phases[i][0]); }
 const evs=$('evs'); const MAXEV=7;
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function logEv(label,type,enc,from,to){
@@ -513,10 +574,10 @@ const LOOP_STEPS=[
 ];
 function makeSeq(steps,phases,loop,wait,quiet){ return {steps,phases,loop,quiet:!!quiet,packets:[],stepIdx:-1,queue:[],left:0,waitT:wait,time:0,done:false,phase:-1,onSpawn:null,onStep:null}; }
 function seqSpawn(S,p){
-  const [label,route,type,,phase,enc]=p;
+  const [label,route,type,,phase,enc,why]=p;
   if(S.quiet){ S.packets.push({label,route,type,enc:!!enc,col:TYPE.bg,s:0,last:0,bg:true}); return; }
   if(phase!=null) setPhase(phase);
-  S.packets.push({label,route,type,enc:!!enc,col:TYPE[type],s:0,last:0});
+  S.packets.push({label,route,type,enc:!!enc,col:TYPE[type],s:0,last:0,why:why||''});
   logEv(label,type,enc,route[0],route[route.length-1]);
   const n=NODES[route[0]]; n.flash=1; n.fc=TYPE[type];
   if(S.onSpawn) S.onSpawn();
@@ -549,7 +610,7 @@ function seqMove(S,dt,timed){
     if(!pk.bg&&fl!==pk.last&&fl>0&&fl<last){ const n=NODES[pk.route[fl]]; n.flash=1; n.fc=pk.col; }
     pk.last=fl;
     if(pk.s>=last){
-      if(!pk.bg){ const n=NODES[pk.route[last]]; n.flash=1; n.fc=pk.col; } S.packets.splice(i,1); S.left--;
+      if(!pk.bg){ const n=NODES[pk.route[last]]; n.flash=1; n.fc=pk.col; if(S===urlSeq&&pk.route[last]===0) onArrive(pk); } S.packets.splice(i,1); S.left--;
       if(S.left<=0&&!S.queue.length&&!S.quiet) S.waitT=(S.stepIdx===S.steps.length-1)?(S.loop?3.2:0.9):0.35;
     }
   }
@@ -605,25 +666,49 @@ function buildUrlSteps(u){
   if(tls) phases.push(['TLS 1.3',TYPE.tls]); phases.push([reqName,TYPE.req],['Close',TYPE.fin]);
   const P=n=>phases.findIndex(p=>p[0]===n);
   const C2R=[0,1,2,3,RES], C2W=[0,1,2,3,4,5,HE,WS], W2C=rev(C2W);
+  const pth=trunc(path,22), port=tls?443:80;
+  const W={
+    dnsQ:`Computers find each other by IP address, not by name. The laptop asks the ISP's DNS resolver to translate ${H} into an IP address.`,
+    dnsR:`The resolver answers: ${H} lives at ${ip}. The laptop can now address its packets to the web server.`,
+    syn:`Step 1 of the TCP three-way handshake. The laptop asks the server to open a connection on port ${port} and sends its starting sequence number.`,
+    synack:'Step 2 of the handshake. The server agrees to connect, acknowledges the SYN and sends its own starting sequence number.',
+    ack3:'Step 3 of the handshake. The laptop acknowledges the server, so the TCP connection is now open and data can flow.',
+    hello:'Starts the TLS handshake. The browser lists the encryption methods it supports and shares its half of the key exchange.',
+    shello:'The server picks the encryption method and sends its half of the key exchange. Both sides can now work out shared secret keys, so everything after this is encrypted.',
+    cert:`The server proves its identity with a certificate signed by a trusted authority, showing it really is ${H}.`,
+    cv:'A digital signature proving the server holds the private key that matches its certificate, so an impostor cannot reuse the certificate.',
+    sfin:'The server confirms the handshake messages were not tampered with. Its side of the secure channel is ready.',
+    cfin:'The browser confirms its side of the handshake. Both ends now share secret keys and the secure channel is open.',
+    get: tls?`The browser asks the server for the page at ${pth}. It travels inside TLS, so routers along the way cannot read it.`
+            :`The browser asks the server for the page at ${pth}. With plain HTTP it is readable by every router along the way.`,
+    ok:'The server reports that the request succeeded (status 200) and sends headers describing the content, such as its type and size.',
+    html:'Part of the web page itself. A page is too big for one packet, so it is split across several TCP segments that the browser reassembles.',
+    ackd:'The laptop acknowledges the page data, so the server knows nothing needs to be sent again.',
+    cn:'Ends the secure TLS session cleanly, so neither side mistakes the closing connection for an attack.',
+    cfin2:'The browser has nothing more to send and starts closing the TCP connection.',
+    sack:"The server acknowledges the browser's FIN.",
+    sfin2:'The server has finished too and closes its side of the connection.',
+    last:'The final acknowledgement. The TCP connection is now fully closed and its port numbers are freed.'
+  };
   const st=[];
   if(!isIP){
-    st.push([[`DNS A? ${H}`,C2R,'dns',0,P('DNS lookup')]]);
-    st.push([[`A ${ip}`,rev(C2R),'dns',0]]);
+    st.push([[`DNS A? ${H}`,C2R,'dns',0,P('DNS lookup'),0,W.dnsQ]]);
+    st.push([[`A ${ip}`,rev(C2R),'dns',0,null,0,W.dnsR]]);
   }
-  st.push([[`SYN :${tls?443:80}`,C2W,'tcp',0,P('TCP handshake')]]);
-  st.push([['SYN-ACK',W2C,'tcp',0]]);
+  st.push([[`SYN :${port}`,C2W,'tcp',0,P('TCP handshake'),0,W.syn]]);
+  st.push([['SYN-ACK',W2C,'tcp',0,null,0,W.synack]]);
   if(tls){
-    st.push([['ACK',C2W,'tcp',0],['ClientHello',C2W,'tls',0.6,P('TLS 1.3')]]);
-    st.push([['ServerHello',W2C,'tls',0],['Certificate',W2C,'tls',0.45,null,1],['CertVerify',W2C,'tls',0.9,null,1],['Finished',W2C,'tls',1.35,null,1]]);
-    st.push([['Finished',C2W,'tls',0,null,1],[`GET ${trunc(path,22)}`,C2W,'req',0.6,P(reqName),1]]);
+    st.push([['ACK',C2W,'tcp',0,null,0,W.ack3],['ClientHello',C2W,'tls',0.6,P('TLS 1.3'),0,W.hello]]);
+    st.push([['ServerHello',W2C,'tls',0,null,0,W.shello],['Certificate',W2C,'tls',0.45,null,1,W.cert],['CertVerify',W2C,'tls',0.9,null,1,W.cv],['Finished',W2C,'tls',1.35,null,1,W.sfin]]);
+    st.push([['Finished',C2W,'tls',0,null,1,W.cfin],[`GET ${pth}`,C2W,'req',0.6,P(reqName),1,W.get]]);
   } else {
-    st.push([['ACK',C2W,'tcp',0],[`GET ${trunc(path,22)}`,C2W,'req',0.6,P(reqName)]]);
+    st.push([['ACK',C2W,'tcp',0,null,0,W.ack3],[`GET ${pth}`,C2W,'req',0.6,P(reqName),0,W.get]]);
   }
-  st.push([['200 OK',W2C,'res',0,null,tls],['HTML',W2C,'res',0.45,null,tls],['HTML',W2C,'res',0.9,null,tls]]);
-  if(tls) st.push([['ACK',C2W,'tcp',0],['close_notify',C2W,'tls',0.55,P('Close'),1],['FIN',C2W,'fin',1.1]]);
-  else st.push([['ACK',C2W,'tcp',0],['FIN',C2W,'fin',0.55,P('Close')]]);
-  st.push([['ACK',W2C,'tcp',0],['FIN',W2C,'fin',0.45]]);
-  st.push([['ACK',C2W,'fin',0]]);
+  st.push([['200 OK',W2C,'res',0,null,tls,W.ok],['HTML',W2C,'res',0.45,null,tls,W.html],['HTML',W2C,'res',0.9,null,tls,W.html]]);
+  if(tls) st.push([['ACK',C2W,'tcp',0,null,0,W.ackd],['close_notify',C2W,'tls',0.55,P('Close'),1,W.cn],['FIN',C2W,'fin',1.1,null,0,W.cfin2]]);
+  else st.push([['ACK',C2W,'tcp',0,null,0,W.ackd],['FIN',C2W,'fin',0.55,P('Close'),0,W.cfin2]]);
+  st.push([['ACK',W2C,'tcp',0,null,0,W.sack],['FIN',W2C,'fin',0.45,null,0,W.sfin2]]);
+  st.push([['ACK',C2W,'fin',0,null,0,W.last]]);
   return {steps:st,phases,host,tls,ip,path,port:tls?443:80,isIP};
 }
 
@@ -720,11 +805,63 @@ let rbBase=null;
 function setRunText(extra){ rbBase=extra; rbText.innerHTML=extra+(typeof pauseHint==='function'?pauseHint():''); }
 urlbar.addEventListener('submit',e=>{
   e.preventDefault();
+  if(!idle()) return;
   const u=parseUrl(urlIn.value);
-  if(!u){ urlErr.textContent='Enter a web address such as www.adelaide.edu.au or https://example.com/page'; urlErr.classList.remove('off'); return; }
+  if(!u){ urlErr.textContent='Type google.com in the address bar, then press Go'; urlErr.classList.remove('off'); return; }
   urlErr.classList.add('off'); urlIn.blur(); startUrl(u);
 });
 urlIn.addEventListener('input',()=>urlErr.classList.add('off'));
+/* ---------- simulated browser ---------- */
+const pageEl=$('page'), tabIco=$('tabico'), tabTitle=$('tabtitle'), lockEl=$('lock'), progEl=$('prog');
+let pageHost='', pageTls=true, htmlGot=0;
+const MAG='<svg viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2.4" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"/><path d="M15 15l6 6"/></svg>';
+const isSearch=h=>/(^|\.)google\.[a-z.]+$/i.test(h);
+function setProg(v){ progEl.style.opacity=v>0&&v<100?1:0; progEl.style.width=v+'%'; }
+function setTab(state,title){ tabIco.className=state; tabTitle.textContent=title; }
+function setLock(){ if(!pageHost){ lockEl.className=''; lockEl.textContent='⌕'; return; }
+  lockEl.className=pageTls?'ok':'warn'; lockEl.textContent=pageTls?'🔒':'⚠ Not secure'; }
+function pageNewTab(){
+  pageHost=''; htmlGot=0; setLock(); setProg(0); setTab('','New tab');
+  pageEl.innerHTML='<div class="np"><b>New tab</b><div>Type <span class="k">google.com</span> in the address bar above, then press <b style="display:inline;font-size:inherit">Go</b></div><small>Watch the packets fly, then the page will appear here</small></div>';
+}
+function pageStatus(msg,prog){
+  pageEl.innerHTML=`<div class="ld"><div class="sp"></div><div>${esc(msg)}</div></div>`; if(prog!=null) setProg(prog);
+}
+function searchPage(full){
+  const foot='<div class="sp-foot"><span>Australia</span><span>Simulated page rendered from the HTML that just arrived</span></div>';
+  if(!full) return `<div class="sp-page"><div class="sp-top"><span class="sk" style="width:46px;height:10px"></span><span class="sk" style="width:46px;height:10px"></span></div>
+    <div class="sp-mid"><div class="sp-logo">${MAG}Search</div><div class="sk" style="width:80%;max-width:300px;height:32px;border-radius:16px"></div>
+    <div class="sp-btns"><span class="sk" style="width:60px;height:22px;border:none"></span><span class="sk" style="width:60px;height:22px;border:none"></span></div></div>${foot}</div>`;
+  return `<div class="sp-page"><div class="sp-top"><span>Images</span><span>News</span><span class="si">Sign in</span></div>
+    <div class="sp-mid"><div class="sp-logo">${MAG}Search</div><div class="sp-box">${MAG}<span class="caret"></span></div>
+    <div class="sp-btns"><span>Search</span><span>Images</span></div></div>${foot}</div>`;
+}
+function genericPage(full){
+  const h=esc(trunc(pageHost,30));
+  return `<div class="sp-page"><div class="gp-head">${h}</div><div class="gp-body"><h2>Welcome to ${h}</h2>
+    ${full?'<p>This page was rebuilt in your browser from the HTML segments that just arrived.</p>':'<p class="sk" style="height:10px;width:70%"></p>'}
+    <div class="gp-ln" style="width:92%"></div><div class="gp-ln" style="width:84%"></div><div class="gp-ln" style="width:60%"></div></div>
+    <div class="sp-foot" style="margin-top:auto"><span>${h}</span><span>Simulated page</span></div></div>`;
+}
+function renderSite(full){
+  const s=isSearch(pageHost);
+  pageEl.innerHTML=s?searchPage(full):genericPage(full);
+  setProg(full?100:90); setTab(full?'done':'loading',full?(s?'Search':pageHost):pageHost);
+}
+function pageLoading(host,tls){ pageHost=host; pageTls=tls; htmlGot=0; setLock(); setTab('loading',host); pageStatus('Starting…',5); }
+function onPhase(name){
+  if(mode!=='url'||journey!=='url'||!pageHost||htmlGot) return;
+  const map={'DNS lookup':['Resolving host…',15],'TCP handshake':['Connecting…',35],'TLS 1.3':['Establishing secure connection…',55]};
+  if(map[name]) pageStatus(...map[name]);
+  else if(/request/.test(name)) pageStatus(`Waiting for ${trunc(pageHost,26)}…`,70);
+}
+function onArrive(pk){
+  if(journey!=='url'||!pageHost) return;
+  if(pk.label==='200 OK'&&!htmlGot) pageStatus('Receiving page…',80);
+  if(pk.label==='HTML'){ htmlGot++; renderSite(htmlGot>=2); }
+}
+pageNewTab();
+
 $('rb-pause').onclick=()=>{ paused=!paused; stepping=false; updRun(); };
 const pauseHint=()=>paused&&mode==='url'?' · <span style="color:var(--mute)">hover a packet to inspect it</span>':'';
 $('rb-step').onclick=()=>{ if(paused){ stepping=true; paused=false; } else paused=true; updRun(); };
@@ -734,12 +871,12 @@ function bootSteps(){
   const L=[0,1], R=[1,0];
   const phases=[['DHCP',TYPE.dhcp],['ARP',TYPE.arp]];
   return {phases, steps:[
-    [['DHCP Discover',L,'dhcp',0,0]],
-    [['DHCP Offer',R,'dhcp',0]],
-    [['DHCP Request',L,'dhcp',0]],
-    [['DHCP ACK',R,'dhcp',0]],
-    [['ARP: who has .1?',L,'arp',0,1]],
-    [['ARP: .1 is at 3c:7a…',R,'arp',0]]
+    [['DHCP Discover',L,'dhcp',0,0,0,'The laptop has just joined the network and has no IP address. It broadcasts to every device, asking whether a DHCP server can give it one.']],
+    [['DHCP Offer',R,'dhcp',0,null,0,'The DHCP server in the home router offers an IP address, a subnet mask and how long the address can be kept (the lease).']],
+    [['DHCP Request',L,'dhcp',0,null,0,'The laptop formally asks to use the offered address. It is still broadcast so any other DHCP server knows its offer was declined.']],
+    [['DHCP ACK',R,'dhcp',0,null,0,'The router confirms the lease and supplies the default gateway and DNS server. The laptop now has a working IP configuration.']],
+    [['ARP: who has .1?',L,'arp',0,1,0,'To send anything off the home network the laptop needs the MAC address of its gateway. It broadcasts: who has 192.168.1.1?']],
+    [['ARP: .1 is at 3c:7a…',R,'arp',0,null,0,'The router replies with its MAC address. The laptop stores it in its ARP cache and can now address Ethernet frames to the gateway.']]
   ]};
 }
 let journey='url', onlineMsgT=0;
@@ -779,7 +916,9 @@ function startUrl(u){
   hudSub.textContent=`Norwood SA → Port Melbourne VIC${b.tls?'':' · plain HTTP, no TLS'}`;
   setRunText(`${b.tls?'🔒':'⚠️'} <b>${esc(u.protocol)}//</b>${esc(trunc(b.host+(u.pathname||'/'),40))}`);
   $('rb-btns').classList.remove('off'); runbar.classList.remove('off'); updRun();
-  urlbar.classList.remove('show'); $('zoom').classList.add('off');
+  $('zoom').classList.add('off');
+  urlIn.value=b.host+(b.path&&b.path!=='/'?b.path:''); urlIn.readOnly=true; $('gobtn').disabled=true;
+  pageLoading(b.host,b.tls); urlbar.classList.add('docked');
 }
 function endUrl(){
   if(urlSeq){ urlSeq.packets=[]; urlSeq.queue=[]; }
@@ -796,6 +935,7 @@ function finishBoot(){
   onlineMsgT=7; setTimeout(()=>{ try{ urlIn.focus({preventScroll:true}); }catch(e){} },350);
 }
 function finishReturn(){
+  urlIn.readOnly=false; $('gobtn').disabled=false; urlbar.classList.remove('docked');
   mode='held'; urlSeq=null; curSeq=loopSeq; setPhases(LOOP_PHASES); setPhase(-1); clearLog();
   hudH1.textContent=HUD0[0]; hudSub.textContent=HUD0[1];
   runbar.classList.add('off'); $('zoom').classList.remove('off');
@@ -828,9 +968,9 @@ function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,
 function drawRouter(x,y,s,col,flash,origin){
   ctx.save(); ctx.translate(x,y);
   if(flash>0){ ctx.strokeStyle=col; ctx.globalAlpha*=flash; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(0,0,s*(1.2+(1-flash)*1.8),0,7); ctx.stroke(); ctx.globalAlpha/=flash; }
-  halo(s*(origin?2.1:1.7),'#39d0ff',origin?0.22:0.14);
+  ctx.shadowColor='#39d0ff'; ctx.shadowBlur=origin?16:8;
   ctx.fillStyle='#071a2c'; ctx.strokeStyle=origin?'#9ff0ff':'#39d0ff'; ctx.lineWidth=Math.max(1.2,s*0.12);
-  ctx.beginPath(); ctx.arc(0,0,s,0,7); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0,0,s,0,7); ctx.fill(); ctx.stroke(); ctx.shadowBlur=0;
   if(s>6){ // router glyph: four arrows
     ctx.strokeStyle=ctx.fillStyle=origin?'#c8f8ff':'#8fe6ff'; ctx.lineWidth=Math.max(1,s*0.1);
     const a=s*0.62,h=s*0.22;
@@ -843,7 +983,7 @@ function drawRouter(x,y,s,col,flash,origin){
 function drawClient(x,y,s,flash,col){
   ctx.save(); ctx.translate(x,y);
   if(flash>0){ ctx.strokeStyle=col; ctx.globalAlpha*=flash; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(0,0,s*(1.3+(1-flash)*1.8),0,7); ctx.stroke(); ctx.globalAlpha/=flash; }
-  halo(s*1.8,'#ffc45a',0.14); ctx.fillStyle='#1c1406'; ctx.strokeStyle='#ffc45a'; ctx.lineWidth=Math.max(1.2,s*0.11);
+  ctx.shadowColor='#ffc45a'; ctx.shadowBlur=10; ctx.fillStyle='#1c1406'; ctx.strokeStyle='#ffc45a'; ctx.lineWidth=Math.max(1.2,s*0.11);
   rr(-s*0.85,-s*0.75,s*1.7,s*1.1,s*0.12); ctx.fill(); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(-s*1.15,s*0.55); ctx.lineTo(s*1.15,s*0.55); ctx.lineTo(s*0.95,s*0.78); ctx.lineTo(-s*0.95,s*0.78); ctx.closePath(); ctx.fillStyle='#ffc45a'; ctx.fill();
   ctx.shadowBlur=0; ctx.restore();
@@ -852,12 +992,11 @@ function drawServer(x,y,s,flash,col,base){
   base=base||'#5cff9d';
   ctx.save(); ctx.translate(x,y);
   if(flash>0){ ctx.strokeStyle=col; ctx.globalAlpha*=flash; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(0,0,s*(1.3+(1-flash)*1.8),0,7); ctx.stroke(); ctx.globalAlpha/=flash; }
-  halo(s*1.8,base,0.13); ctx.strokeStyle=base; ctx.lineWidth=Math.max(1.2,s*0.1);
+  ctx.shadowColor=base; ctx.shadowBlur=10; ctx.strokeStyle=base; ctx.lineWidth=Math.max(1.2,s*0.1);
   for(let k=0;k<3;k++){ rr(-s*0.8,-s*0.95+k*s*0.66,s*1.6,s*0.56,s*0.1); ctx.fillStyle='#050d1c'; ctx.fill(); ctx.stroke();
     ctx.fillStyle=base; ctx.beginPath(); ctx.arc(s*0.48,-s*0.67+k*s*0.66,Math.max(0.8,s*0.09),0,7); ctx.fill(); }
   ctx.shadowBlur=0; ctx.restore();
 }
-function halo(r,col,a){ const g0=ctx.globalAlpha; ctx.globalAlpha=g0*a; ctx.fillStyle=col; ctx.beginPath(); ctx.arc(0,0,r,0,7); ctx.fill(); ctx.globalAlpha=g0; }
 function drawLock(x,y,s,col){
   ctx.save(); ctx.fillStyle=col; ctx.strokeStyle=col; ctx.lineWidth=1.4;
   ctx.beginPath(); ctx.arc(x+s/2,y+s*0.38,s*0.28,Math.PI,0); ctx.stroke();
@@ -865,30 +1004,7 @@ function drawLock(x,y,s,col){
 }
 const labelRects=[];
 function freeRect(x,y,w,h){ for(const r of labelRects) if(x<r.x+r.w&&x+w>r.x&&y<r.y+r.h&&y+h>r.y) return false; return true; }
-const labelCache=new Map();
-function labelImg(title,sub,col){
-  const key=title+'|'+(sub||'')+'|'+(col||'')+'|'+DPR; let L=labelCache.get(key); if(L) return L;
-  const c=document.createElement('canvas'), x=c.getContext('2d');
-  x.font='600 12px "Segoe UI",system-ui,sans-serif'; const w1=x.measureText(title).width;
-  x.font='11px "Segoe UI",system-ui,sans-serif'; const w2=sub?x.measureText(sub).width:0;
-  const w=Math.ceil(Math.max(w1,w2)+14), h=sub?34:20;
-  c.width=Math.ceil((w+2)*DPR); c.height=Math.ceil((h+2)*DPR); x.scale(DPR,DPR); x.translate(1,1);
-  x.fillStyle='rgba(4,12,24,.82)'; x.strokeStyle=col||'rgba(57,208,255,.45)'; x.lineWidth=1;
-  x.beginPath(); x.moveTo(6,0); x.arcTo(w,0,w,h,6); x.arcTo(w,h,0,h,6); x.arcTo(0,h,0,0,6); x.arcTo(0,0,w,0,6); x.closePath(); x.fill(); x.stroke();
-  x.fillStyle='#e6f4ff'; x.font='600 12px "Segoe UI",system-ui,sans-serif'; x.textBaseline='top'; x.fillText(title,7,4);
-  if(sub){ x.fillStyle='#8fb2d0'; x.font='11px "Segoe UI",system-ui,sans-serif'; x.fillText(sub,7,19); }
-  L={c,w,h}; if(labelCache.size>300) labelCache.clear(); labelCache.set(key,L); return L;
-}
 function nodeLabel(x,y,s,title,sub,alpha,col){
-  const IMG=labelImg(title,sub,col), w=IMG.w, h=IMG.h;
-  const cands=[[x+s+8,y-h/2],[x-s-8-w,y-h/2],[x-w/2,y-s-8-h],[x-w/2,y+s+8]];
-  const fits=([lx,ly])=>lx>=2&&ly>=2&&lx+w<=VW-2&&ly+h<=VH-2;
-  cands.sort((p,q)=>fits(q)-fits(p));
-  for(let [lx,ly] of cands){ lx=clamp(lx,2,Math.max(2,VW-w-2)); ly=clamp(ly,2,Math.max(2,VH-h-2)); if(!freeRect(lx,ly,w,h)) continue;
-    labelRects.push({x:lx,y:ly,w,h}); ctx.globalAlpha=alpha; ctx.drawImage(IMG.c,lx-1,ly-1,w+2,h+2); ctx.globalAlpha=1; return true; }
-  return false;
-}
-function nodeLabelOld(x,y,s,title,sub,alpha,col){
   ctx.font='600 12px "Segoe UI",system-ui,sans-serif'; const w1=ctx.measureText(title).width;
   ctx.font='11px "Segoe UI",system-ui,sans-serif'; const w2=sub?ctx.measureText(sub).width:0;
   const w=Math.max(w1,w2)+14, h=sub?34:20;
@@ -909,7 +1025,7 @@ function placeLabel(x,y,text,alpha,size,spacing,avoid){
     if(!freeRect(x-w/2,y-h/2,w,h)) return; labelRects.push({x:x-w/2,y:y-h/2,w,h}); }
   ctx.save(); ctx.globalAlpha=alpha; ctx.font=`600 ${size}px "Segoe UI",system-ui,sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
   if(spacing&&'letterSpacing' in ctx) ctx.letterSpacing=spacing+'px';
-  ctx.lineWidth=3; ctx.strokeStyle='rgba(0,0,0,.55)'; ctx.strokeText(text,x,y); ctx.fillStyle='rgba(170,225,255,.85)'; ctx.fillText(text,x,y); ctx.restore();
+  ctx.fillStyle='rgba(170,225,255,.85)'; ctx.shadowColor='#000'; ctx.shadowBlur=6; ctx.fillText(text,x,y); ctx.restore();
 }
 
 function drawOverlay(time,netA,decoA,packets,O){
@@ -928,24 +1044,21 @@ function drawOverlay(time,netA,decoA,packets,O){
       ctx.beginPath(); let pen=false; for(const q of sp){ if(!q){pen=false;continue;} if(!pen){ctx.moveTo(q.x,q.y);pen=true;} else ctx.lineTo(q.x,q.y);} ctx.stroke();
       if(A.back) sp.reverse();
       const TL=A.len*2+6, hf=((time*A.spd+A.off)%1)*(sp.length-1+TL), head=hf|0;
-      ctx.strokeStyle=A.col;
+      ctx.shadowColor=A.col; ctx.shadowBlur=6; ctx.strokeStyle=A.col;
       for(let i=Math.max(1,head-TL);i<=Math.min(head,sp.length-1);i++){      // trail fades and thins towards the tail
         const a=sp[i-1], b=sp[i]; if(!a||!b) continue; const f=1-(head-i)/TL;
         ctx.globalAlpha=decoA*0.62*f*f; ctx.lineWidth=0.6+A.lw*f;
         ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
       const hq=sp[Math.min(head,sp.length-1)];
-      if(hq&&head<=sp.length-1){ ctx.fillStyle=A.col; ctx.globalAlpha=decoA*0.18; ctx.beginPath(); ctx.arc(hq.x,hq.y,A.lw*2.6,0,7); ctx.fill();
-        ctx.globalAlpha=decoA*0.85; ctx.beginPath(); ctx.arc(hq.x,hq.y,A.lw*0.9,0,7); ctx.fill(); }
+      if(hq&&head<=sp.length-1){ ctx.globalAlpha=decoA*0.8; ctx.fillStyle=A.col; ctx.beginPath(); ctx.arc(hq.x,hq.y,A.lw*0.9,0,7); ctx.fill(); }
+      ctx.shadowBlur=0;
     }
     ctx.globalAlpha=1;
   }
 
   // world positions for network
-  const only=O.only, inSet=i=>!only||only.has(i), edgeIn=sg=>!only||only.has(sg.a)||only.has(sg.b);
-  NODES.forEach(n=>{ if(!inSet(n.i)) return; n.world.copy(n.local).applyMatrix4(mw); n.scr=proj(n.world,{}); });
+  NODES.forEach(n=>{ n.world.copy(n.local).applyMatrix4(mw); n.scr=proj(n.world,{}); });
   for(const sg of EDGE_LIST){ let px=0,prev=null;
-    if(!edgeIn(sg)) continue;
-    if(netA<=0.01||!isActive(sg.a)||!isActive(sg.b)||(sg.mesh&&(!idle()||meshA<0.01))){ sg.px=0; continue; }
     for(let i=0;i<sg.local.length;i++){ sg.world[i].copy(sg.local[i]).applyMatrix4(mw); const q=proj(sg.world[i],{}); sg.scr[i]=q;
       if(q&&prev&&(onScreen(q,40)||onScreen(prev,40))) px+=Math.hypot(q.x-prev.x,q.y-prev.y); prev=q; }
     sg.px=px; }
@@ -958,26 +1071,23 @@ function drawOverlay(time,netA,decoA,packets,O){
 
   // links
   ctx.lineCap='round'; ctx.lineJoin='round';
-  const edgeGroups=new Map();
   for(const sg of EDGE_LIST){
-    if(!edgeIn(sg)||!isActive(sg.a)||!isActive(sg.b)) continue;
+    if(!isActive(sg.a)||!isActive(sg.b)) continue;
     if(sg.mesh&&(!idle()||meshA<0.01)) continue;
-    const key=sg.mesh?'m':(sg.a>=CAP0||sg.b>=CAP0)?'c':'r';
-    if(!edgeGroups.has(key)) edgeGroups.set(key,[]); edgeGroups.get(key).push(sg);
-  }
-  const tracePath=list=>{ ctx.beginPath(); for(const sg of list){ let pen=false; for(const q of sg.scr){ if(!q){pen=false;continue;} if(!pen){ctx.moveTo(q.x,q.y);pen=true;} else ctx.lineTo(q.x,q.y);} } };
-  for(const [key,list] of edgeGroups){
-    const mesh=key==='m', eA=mesh?meshA*0.75:key==='c'?capA:1;
-    tracePath(list);
-    if(!mesh){ ctx.globalAlpha=netA*0.07*eA; ctx.strokeStyle='#39d0ff'; ctx.lineWidth=6; ctx.stroke(); }   // soft glow, main routes only
-    ctx.globalAlpha=netA*(mesh?0.5:0.55)*eA; ctx.strokeStyle=mesh?'#4ff0a8':'#5fd8ff'; ctx.lineWidth=mesh?1.3:1.4; ctx.stroke();
-    if(!mesh){ ctx.globalAlpha=netA*0.35*eA; ctx.setLineDash([2,10]); ctx.lineDashOffset=-time*18; ctx.lineWidth=1.6; ctx.strokeStyle='#bff4ff'; ctx.stroke(); ctx.setLineDash([]); }
+    const eA=sg.mesh?meshA*0.75:(sg.a>=CAP0||sg.b>=CAP0)?capA:1;
+    const pal=sg.mesh?[[6,0.07,'#1fd98a'],[1.3,0.5,'#4ff0a8']]:[[6,0.07,'#39d0ff'],[1.4,0.55,'#5fd8ff']];
+    for(const [lw,al,col] of pal){
+      ctx.globalAlpha=netA*al*eA; ctx.strokeStyle=col; ctx.lineWidth=lw; ctx.beginPath(); let pen=false;
+      for(const q of sg.scr){ if(!q){pen=false;continue;} if(!pen){ctx.moveTo(q.x,q.y);pen=true;} else ctx.lineTo(q.x,q.y);} ctx.stroke(); }
+    // marching dashes
+    ctx.globalAlpha=netA*0.35*eA; ctx.setLineDash([2,10]); ctx.lineDashOffset=-time*18; ctx.lineWidth=1.6; ctx.strokeStyle=sg.mesh?'#c8ffe4':'#bff4ff';
+    ctx.beginPath(); let pen=false; for(const q of sg.scr){ if(!q){pen=false;continue;} if(!pen){ctx.moveTo(q.x,q.y);pen=true;} else ctx.lineTo(q.x,q.y);} ctx.stroke(); ctx.setLineDash([]);
   }
   ctx.globalAlpha=1;
 
   // nodes, grouped when crowded
   const nodeS=O.inset?15*O.scale:lerp(4,15,sstep(0.6,0.97,z))*clamp(VW/1200,0.72,1);
-  const groups={}; NODES.forEach(n=>{ if(isActive(n.i)&&inSet(n.i)) (groups[n.grp]=groups[n.grp]||[]).push(n);});
+  const groups={}; NODES.forEach(n=>{ if(isActive(n.i)) (groups[n.grp]=groups[n.grp]||[]).push(n);});
   const drawList=[], labelList=[];
   for(const g in groups){
     const vis=groups[g].filter(n=>n.scr);
@@ -1012,10 +1122,9 @@ function drawOverlay(time,netA,decoA,packets,O){
   const showPill=sstep(0.5,0.6,z)*netA;
   const pills=[];
   for(const pk of packets){
-    if(only){ const r=pk.route, k=Math.min(Math.floor(pk.s),r.length-2); if(!only.has(r[k])&&!only.has(r[k+1])) continue; }
     const q=scrAt(pk); if(!q) continue;
-    if(pk.bg){ if(pk.mesh&&meshA<0.01) continue; const ba=netA*(pk.mesh?meshA:1); ctx.fillStyle=pk.col; ctx.globalAlpha=ba*0.2; ctx.beginPath(); ctx.arc(q.x,q.y,5,0,7); ctx.fill();
-      ctx.globalAlpha=ba*0.85; ctx.beginPath(); ctx.arc(q.x,q.y,2.2,0,7); ctx.fill(); continue; }
+    if(pk.bg){ if(pk.mesh&&meshA<0.01) continue; ctx.globalAlpha=netA*0.8*(pk.mesh?meshA:1); ctx.fillStyle=pk.col; ctx.shadowColor=pk.col; ctx.shadowBlur=8;
+      ctx.beginPath(); ctx.arc(q.x,q.y,2.6,0,7); ctx.fill(); ctx.shadowBlur=0; continue; }
     let q2=scrAt(pk,pk.s+0.004), sg=1; if(!q2){ q2=scrAt(pk,pk.s-0.004); sg=-1; }
     let tx=1,ty=0; if(q2){ tx=(q2.x-q.x)*sg; ty=(q2.y-q.y)*sg; const l=Math.hypot(tx,ty)||1; tx/=l; ty/=l; }
     const nx=-ty, ny=tx, lane=4.5;
@@ -1029,9 +1138,9 @@ function drawOverlay(time,netA,decoA,packets,O){
       const pp={x:p.x+nx*lane,y:p.y+ny*lane};
       if(prev){ ctx.globalAlpha=netA*(i/10)*0.9; ctx.strokeStyle=pk.col; ctx.lineWidth=1+i*0.25; ctx.beginPath(); ctx.moveTo(prev.x,prev.y); ctx.lineTo(pp.x,pp.y); ctx.stroke(); }
       prev=pp; }
-    ctx.fillStyle=pk.col; ctx.globalAlpha=netA*0.22; ctx.beginPath(); ctx.arc(X,Y,lerp(7,10,sstep(0.6,1,z)),0,7); ctx.fill(); ctx.globalAlpha=netA;
+    ctx.globalAlpha=netA; ctx.fillStyle=pk.col; ctx.shadowColor=pk.col; ctx.shadowBlur=14;
     ctx.beginPath(); ctx.arc(X,Y,lerp(2.6,4.2,sstep(0.6,1,z)),0,7); ctx.fill();
-    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(X,Y,1.3,0,7); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(X,Y,1.3,0,7); ctx.fill(); ctx.shadowBlur=0;
     if(showPill>0.01) pills.push({pk,X,Y,nx,ny});
     pktHits.push({pk,x:(O.ox||0)+X-9,y:(O.oy||0)+Y-9,w:18,h:18});
   }
@@ -1058,7 +1167,7 @@ function drawOverlay(time,netA,decoA,packets,O){
     pktHits.push({pk,x:(O.ox||0)+x-3,y:(O.oy||0)+y-3,w:w+6,h:h+6});
     const hot=hoverPk===pk;
     ctx.globalAlpha=showPill;
-    if(hot){ ctx.strokeStyle='#fff'; ctx.lineWidth=2; rr(x-2,y-2,w+4,h+4,(h+4)/2); ctx.stroke(); } ctx.fillStyle=pk.col; const ga=ctx.globalAlpha; ctx.globalAlpha=ga*0.25; rr(x-3,y-3,w+6,h+6,(h+6)/2); ctx.fill(); ctx.globalAlpha=ga; rr(x,y,w,h,h/2); ctx.fill();
+    if(hot){ ctx.strokeStyle='#fff'; ctx.lineWidth=2; rr(x-2,y-2,w+4,h+4,(h+4)/2); ctx.stroke(); } ctx.fillStyle=pk.col; ctx.shadowColor=pk.col; ctx.shadowBlur=10; rr(x,y,w,h,h/2); ctx.fill(); ctx.shadowBlur=0;
     ctx.strokeStyle='rgba(0,0,0,.35)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(X,Y); ctx.lineTo(cx-nx*h/2,cy-ny*h/2); ctx.stroke();
     if(pk.enc) drawLock(x+7,cy-fs*0.42,fs*0.8,'#071019');
     ctx.fillStyle='#071019'; ctx.fillText(pk.label,x+6+lk,cy+0.5);
@@ -1069,15 +1178,13 @@ function drawOverlay(time,netA,decoA,packets,O){
 /* ---------- layer fades ---------- */
 function applyLayers(alt,zz){
   const v2=1-sstep(0.012,0.045,alt), v3=1-sstep(0.0025,0.008,alt);
-  LY1.u.uNext.value=v2; LY2.forEach(L=>{L.u.uSelf.value=v2; L.u.uNext.value=v3; L.p.visible=v2>0.004;}); LY3.forEach(L=>{L.u.uSelf.value=v3; L.p.visible=v3>0.004;});
-  LY1.p.visible=v2<0.996;
-  atmoU.uOp.value=sstep(0.01,0.25,alt); atmo.visible=atmoU.uOp.value>0.004;
+  LY1.u.uNext.value=v2; LY2.forEach(L=>{L.u.uSelf.value=v2; L.u.uNext.value=v3;}); LY3.forEach(L=>L.u.uSelf.value=v3);
+  atmoU.uOp.value=sstep(0.01,0.25,alt);
   grat.material.opacity=0.16*sstep(0.02,0.4,alt);
   coastG.material.opacity=0.38*sstep(0.03,0.2,alt);
   coastA.material.opacity=0.7;
   cbd.material.opacity=0.32*sstep(0.8,0.93,zz);
-  cityLayer.u.uOpacity.value=sstep(0.06,0.25,alt); cityLayer.p.visible=cityLayer.u.uOpacity.value>0.004;
-  grat.visible=grat.material.opacity>0.002; coastG.visible=coastG.material.opacity>0.002; cbd.visible=cbd.material.opacity>0.002;
+  cityLayer.u.uOpacity.value=sstep(0.06,0.25,alt);
 }
 function setNearFar(cam,alt){ const hor=Math.sqrt(Math.max(0,(1+alt)*(1+alt)-1)); cam.near=Math.max(alt*0.04,1e-6); cam.far=hor*1.6+0.08+(alt>0.5?4:0); cam.updateProjectionMatrix(); }
 
@@ -1105,45 +1212,33 @@ function renderInsets(time,packets){
     const x=I.user?I.user.fx*VW-w/2:G.xs[I.slot], y=I.user?I.user.fy*VH-h/2:G.top;
     I.x=Math.round(clamp(x,0,VW-w)); I.y=Math.round(clamp(y,0,VH-h)); I.w=w; I.h=h; });
   INSETS.forEach(I=>{ insetPose(I); I.anchor=proj(I.centre,{}); });
-  // the map inside each box only changes if the box size or the globe moves, so render it once and reuse the image
-  const me=globe.matrixWorld.elements, gkey=[w,h,DPR,me[0].toFixed(5),me[2].toFixed(5),me[8].toFixed(5),me[9].toFixed(5)].join('|');
-  const stale=INSETS.filter(I=>!I.img||I.imgKey!==gkey);
-  if(stale.length){
-    const prevScale=dotLayers.map(L=>L.u.uScale.value);
-    renderer.setScissorTest(true);
-    for(const I of stale){
-      const vx=Math.min(I.x,VW-w), vy=Math.max(0,VH-I.y-h);
-      renderer.setViewport(vx,vy,w,h); renderer.setScissor(vx,vy,w,h);
-      renderer.setClearColor(0x030a15,1); renderer.clear();
-      dotLayers.forEach(L=>L.u.uScale.value=sc); applyLayers(insetCam.position.length()-1,1);
-      insetPose(I); renderer.render(scene,insetCam);
-      if(!I.img){ I.img=document.createElement('canvas'); }
-      const pw=Math.round(w*DPR), ph=Math.round(h*DPR); I.img.width=pw; I.img.height=ph;
-      I.img.getContext('2d').drawImage(glc,Math.round(vx*DPR),Math.round((VH-vy-h)*DPR),pw,ph,0,0,pw,ph);
-      I.imgKey=gkey;
-    }
-    renderer.setScissorTest(false); renderer.setViewport(0,0,VW,VH); renderer.setClearColor(0x02050b,1);
-    dotLayers.forEach((L,i)=>L.u.uScale.value=prevScale[i]);
+  const prevScale=dotLayers.map(L=>L.u.uScale.value);
+  renderer.setScissorTest(true);
+  for(const I of INSETS){
+    renderer.setViewport(I.x,VH-I.y-h,w,h); renderer.setScissor(I.x,VH-I.y-h,w,h);
+    renderer.setClearColor(0x030a15,1); renderer.clear();
+    dotLayers.forEach(L=>L.u.uScale.value=sc); applyLayers(insetCam.position.length()-1,1);
+    insetPose(I); renderer.render(scene,insetCam);
   }
+  renderer.setScissorTest(false); renderer.setViewport(0,0,VW,VH); renderer.setClearColor(0x02050b,1);
+  dotLayers.forEach((L,i)=>L.u.uScale.value=prevScale[i]);
   ctx.setTransform(DPR,0,0,DPR,0,0);
   for(const I of INSETS){ if(!I.anchor) continue;
     ctx.globalAlpha=insetA; ctx.strokeStyle='#39d0ff'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(I.anchor.x,I.anchor.y,9,0,7); ctx.stroke(); }
   for(const I of INSETS){
     insetPose(I); camera=insetCam; VW=w; VH=h; z=1;
-    ctx.setTransform(DPR,0,0,DPR,0,0); ctx.clearRect(I.x,I.y,w,h); ctx.globalAlpha=1; ctx.drawImage(I.img,I.x,I.y,w,h);
+    ctx.setTransform(DPR,0,0,DPR,0,0); ctx.clearRect(I.x,I.y,w,h);
     ctx.save(); ctx.translate(I.x,I.y);
     ctx.beginPath(); ctx.rect(0,0,w,h); ctx.clip();
-    drawOverlay(time,1,0,packets,{inset:true,only:I.only||(I.only=new Set(I.nodes)),ox:I.x,oy:I.y,scale:h<160?0.72:h<240?0.85:0.95});
+    drawOverlay(time,1,0,packets,{inset:true,ox:I.x,oy:I.y,scale:h<160?0.72:h<240?0.85:0.95});
     ctx.restore();
     camera=mainCam; VW=mVW; VH=mVH; z=mz;
     ctx.setTransform(DPR,0,0,DPR,0,0); ctx.globalAlpha=insetA;
-    ctx.strokeStyle='rgba(57,208,255,.16)'; ctx.lineWidth=7; ctx.strokeRect(I.x-2.5,I.y-2.5,w+5,h+5);
-    ctx.strokeStyle='rgba(57,208,255,.75)'; ctx.lineWidth=1.5; ctx.strokeRect(I.x+0.5,I.y+0.5,w-1,h-1);
-    if(!I.tImg||I.tDPR!==DPR){ const c=document.createElement('canvas'), x=c.getContext('2d'); x.font='600 10.5px "Segoe UI",system-ui,sans-serif';
-      const tw=Math.ceil(x.measureText(I.title).width+12); c.width=tw*DPR; c.height=18*DPR; x.scale(DPR,DPR);
-      x.fillStyle='rgba(4,12,24,.9)'; x.fillRect(0,0,tw,18); x.font='600 10.5px "Segoe UI",system-ui,sans-serif'; x.fillStyle='#bfe9ff'; x.textBaseline='middle'; x.fillText(I.title,6,9.5);
-      I.tImg=c; I.tW=tw; I.tDPR=DPR; }
-    ctx.drawImage(I.tImg,I.x,I.y,Math.min(I.tW,w),18);
+    ctx.strokeStyle='rgba(57,208,255,.7)'; ctx.lineWidth=1.5; ctx.shadowColor='#39d0ff'; ctx.shadowBlur=12;
+    ctx.strokeRect(I.x+0.5,I.y+0.5,w-1,h-1); ctx.shadowBlur=0;
+    ctx.font='600 10.5px "Segoe UI",system-ui,sans-serif'; const tw=ctx.measureText(I.title).width+12;
+    ctx.fillStyle='rgba(4,12,24,.9)'; ctx.fillRect(I.x,I.y,Math.min(tw,w),18);
+    ctx.fillStyle='#bfe9ff'; ctx.textBaseline='middle'; ctx.textAlign='left'; ctx.fillText(I.title,I.x+6,I.y+9.5);
   }
   ctx.globalAlpha=1;
 }
@@ -1206,6 +1301,7 @@ function showPkt(pk,mx,my){
   pktEl.style.setProperty('--c',pk.col);
   const pdu=d.proto==='UDP'?'datagram':'segment';
   pktEl.innerHTML=`<div class="hd"><span class="nm">${d.enc?'🔒 ':''}${esc(d.name)}</span><span class="lt">${d.tag}</span></div>
+  ${pk.why?`<div class="why"><b>What this packet does</b>${esc(pk.why)}</div>`:''}
   <div class="rows">
     ${d.arp?`<div class="row"><span class="lt">L2</span><div><b>ARP message</b><span>${esc(d.l7)}</span><em>ARP has no IP header or ports: it rides directly inside the Ethernet frame</em></div></div>`:''}
     ${!d.arp&&d.l7?`<div class="row"><span class="lt">${d.tag==='L6'?'L6':'L7'}</span><div><b>${d.tag==='L6'?'TLS record':'Application data'}</b><span>${esc(d.l7)}</span>${d.enc&&d.tag==='L7'?'<em>Carried inside TLS, so routers cannot read it</em>':''}</div></div>`:''}
@@ -1267,17 +1363,7 @@ $('begin').addEventListener('click',()=>{
 let spin=0.6, last=performance.now(), time=0;
 const stageEl=$('stage'), hint=$('hint');
 let stageTxt='';
-let running=true, onScreenNow=true, slowT=0, ema=16;
-if('IntersectionObserver' in window){
-  new IntersectionObserver(es=>{ onScreenNow=es[0].isIntersecting; if(onScreenNow&&!running){ running=true; last=performance.now(); requestAnimationFrame(frameLoop); } },{threshold:0}).observe($('app'));
-}
-function adapt(raw){
-  ema=ema*0.95+raw*0.05;
-  if(ema>28&&dprCap>1){ slowT+=raw/1000; if(slowT>2.5){ dprCap=Math.max(1,dprCap-0.25); slowT=0; ema=16; resize(); } } else slowT=Math.max(0,slowT-raw/2000);
-}
 function frameLoop(now){
-  if(!onScreenNow){ running=false; return; }
-  adapt(now-last);
   const dt=clamp((now-last)/1000,0,0.05); last=now; time+=dt;
   if(mode==='loop'&&beginTw){ beginTw.t+=dt; const u=clamp(beginTw.t/beginTw.dur,0,1), e=u*u*u*(u*(u*6-15)+10);
     z=zT=lerp(beginTw.from,BEGIN_Z,e); if(u>=1){ const f=beginTw.then; beginTw=null; if(f) f(); } }
@@ -1342,12 +1428,18 @@ function frameLoop(now){
   else stageEl.firstChild.textContent=Math.round(z*100)+'%';
   stageEl.classList.toggle('off',!idle());
   // address bar beside the laptop
-  const lp=NODES[0].scr, showBar=((mode==='loop'&&z>0.9)||mode==='held')&&lp&&onScreen(lp,0);
-  if(showBar){ const bw=urlbar.offsetWidth||360;
-    const minL=VW>700?274:12; const L=clamp(lp.x-bw*0.35,minL,Math.max(minL,VW-bw-84)); const hr=$('hud').getBoundingClientRect(); let T=clamp(lp.y+46,60,VH-130); if(L<hr.right+8) T=Math.max(T,hr.bottom+10); urlbar.style.left=L+'px'; urlbar.style.top=T+'px'; }
+  const lp=NODES[0].scr, docked=journey==='url'&&(mode==='url'||mode==='return');
+  const showBar=docked||(((mode==='loop'&&z>0.9)||mode==='held')&&lp&&onScreen(lp,0));
+  if(showBar){ const bw=urlbar.offsetWidth||360, bh=urlbar.offsetHeight||300, hr=$('hud').getBoundingClientRect();
+    let L,T;
+    if(docked){ const lg=$('log'), lr=lg.getBoundingClientRect(), logOn=getComputedStyle(lg).display!=='none';
+      L=12; T=(logOn?lr.top:VH-60)-bh-10; T=Math.max(T,hr.bottom+10);
+      if(insetA>0.3){ const ib=Math.max(...INSETS.filter(I=>I.w&&I.x<L+bw).map(I=>I.y+I.h+10),0); if(ib+bh<=VH-10) T=Math.max(T,ib); } }
+    else { const minL=VW>700?274:12; L=clamp(lp.x-bw*0.35,minL,Math.max(minL,VW-bw-84)); T=clamp(lp.y+46,60,Math.max(60,VH-bh-12)); if(L<hr.right+8) T=Math.max(T,hr.bottom+10); }
+    urlbar.style.left=L+'px'; urlbar.style.top=T+'px'; }
   if(showBar!==urlbar.classList.contains('show')){ urlbar.classList.toggle('show',showBar); if(!showBar) urlIn.blur(); }
   if(onlineMsgT>0) onlineMsgT-=dt;
-  const hintTxt=!idle()?'':onlineMsgT>0?'Your laptop is online. Type a web address.':(zT<0.03&&!beginTw)?'Press Begin Journey, or scroll to fly in':(z>0.8&&z<=0.9)?'Zoom all the way in to the laptop to type a web address':'';
+  const hintTxt=!idle()?'':onlineMsgT>0?'Your laptop is online. Type google.com in the browser.':(zT<0.03&&!beginTw)?'Press Begin Journey, or scroll to fly in':(z>0.8&&z<=0.9)?'Zoom all the way in to the laptop, then type google.com':'';
   if(hintTxt) hint.textContent=hintTxt;
   thumb.style.top=((1-zT)*100)+'%'; fill.style.height=(zT*100)+'%';
   track.setAttribute('aria-valuenow',Math.round(zT*100));
